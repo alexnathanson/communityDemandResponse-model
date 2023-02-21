@@ -8,14 +8,14 @@ class Participant:
     self.csrp = True
     self.zone = zone
     self.network = network
-    self.demandResponseCapcityW = 500
-    self.storageCapacity-SLA-Wh = 2000
-    self.storageCapacity-LiOn-Wh = 0
+    self.demandResponseCapcity_W = 500
+    self.storageCapacity_SLA_Wh = 2000
+    self.storageCapacity_LiOn_Wh = 0
     
 class Production:
   def __init__(self):
-    self.pvProductionCapacityW = 50
-    self.windProductionCapcityW = 0
+    self.pvProductionCapacity_W = 50
+    self.windProductionCapcity_W = 0
 
 class Load:
   def __init__(self):
@@ -26,3 +26,8 @@ class Load:
     self.wattage = 500
     self.dutyCycle = 1
     self.shiftable = False
+
+class windowAC(Load):
+  def __init__(self):
+    super().__init__()
+    self.dutyCycle = .75
