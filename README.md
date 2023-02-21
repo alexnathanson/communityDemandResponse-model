@@ -8,3 +8,12 @@ weather data
 
 Psuedo code:
 
+# Setup
+
+## Create virtual environment
+
+`python -m venv venv`
+
+To activate
+
+`<venv>\Scripts\activate.bat`
