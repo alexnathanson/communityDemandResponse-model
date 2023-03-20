@@ -44,6 +44,13 @@ for line in Lines:
         zone = line[zS:zE].replace(","," ")
 
         line = line.replace(zone.replace(' ',','),zone)
+
+        #fix multi-day dates!!!
+        #currently this is done manually after the fact
+        if '-' in line.split(',')[0]:
+            lineList = line.split(',')
+            line.replace(lineList[0],lineList[0].split('-')[0])
+
     print(line)
     newLines.append(line)
 

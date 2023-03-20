@@ -1,5 +1,6 @@
 from random import random
 import pandas
+from datetime import datetime
 
 class Model:
   def __init__(self, participants, month):
@@ -24,9 +25,13 @@ class Model:
     for i in range(self.daysInMonth):
       #check if event occurs
       eventInfo = self.eventToday(i) 
-      if eventInfo != False:
+
+      if type(eventInfo) != bool:
+        print('')
+        print("***EVENT INFO***")
+        print(eventInfo)
         #check if event occurs after PSH (3pm) in order to add energy produced that day
-        if self.afterPSH(eventInfo[3]):
+        if self.afterPSH(eventInfo['Start Time']):
           print("event occurs after PSH")
           #check energy production and update battery status
           energyToday = self.energyProducedToday(self.weather[i])
@@ -93,16 +98,32 @@ class Model:
   #check if DR event occurs on given date
   #return info for the event
   def eventToday(self, date):
-    for d in range(len(self.eventHistory)):
-      if date == self.eventHistory[d][0]:
-        print("DR event on " + str(self.month) + "/" + str(self.eventHistory[d][0]))
-        return self.eventHistory[d]
+    eH = self.eventHistory
+
+    # print(date)
+    # #format as 2 digit day
+    # if date < 10:
+    #   date = '0' + str(date)
+    # else:
+    #   date = str(date)
+
+    # print(date)
+    event = eH[(eH['Event Date'] == '2022-08-' + str(date)) & (eH['Program'] == 'CSRP')]
+    if event.shape[0] > 0:
+      # print('DR event on ')
+      # print(event.iloc[0])
+      #this only returns the first line, which is fine for all networks but needs to be reworked
+      return event.iloc[0]
+    # for d in range(len(self.eventHistory)):
+    #   if date == self.eventHistory[d][0]:
+    #     print("DR event on " + str(self.month) + "/" + str(self.eventHistory[d][0]))
+    #     return self.eventHistory[d]
     return False
 
   #check if DR event occurs after peak sun hours
   def afterPSH(self,eventStartTime):
     #will need to be updated with actual PSH time - also should account for partial coverage
-    if eventStartTime > 15:
+    if datetime.strptime(eventStartTime, '%H:%M') > datetime.strptime('15:00', '%H:%M'):
       return True
     else:
       return False 
@@ -110,7 +131,13 @@ class Model:
   def csvToDf(self,csvFile):
     df = pandas.read_csv(csvFile)
     print(df.head())
-    print(df.columns())
+    print(df.columns)
+
+    #convert str to date
+    df['Event Date']=df['Event Date'].astype('datetime64[ns]')
+
+    print(df.head())
+
     return df
 
   #FIX THIS
@@ -123,7 +150,8 @@ class Model:
 
   def printReport(self, pL):
     tp = "August 2022"
-    nE = 3
+    nE = len(pL)
+    print('')
     print("*** Demand Response Aggregation Model Report ***")
     print("Time period: " + str(tp))
     print("# Events: " + str(nE))
@@ -133,7 +161,7 @@ class Model:
       tP = tP + p
     tP = tP / len(pL)
 
-    print(pL)
+    print("Participation History: " + str(pL))
     print("Overall Participation Rate: " + str(tP))
   
 class Participant:

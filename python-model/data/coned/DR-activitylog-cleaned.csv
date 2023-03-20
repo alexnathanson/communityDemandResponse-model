@@ -554,7 +554,7 @@ Event Date,Administrator,Program,Start Time,End Time,Event Duration,Zone/Network
 7/7/2020,Con Edison,CSRP,16:00,22:00,6:00,Brownsville*,Event,Unplanned
 7/7/2020,Con Edison,DLRP,16:00,22:00,6:00,Brownsville*,Event,Contingency
 7/7/2020,Con Edison,Resideo,16:00,22:00,6:00,Brownsville*,Event,Contingency
-7/9/2020-7/10/2020,Con Edison,CSRP,22:00,2:00,4:00,Richmond Hill,Event,Unplanned
+7/9/2020,Con Edison,CSRP,22:00,2:00,4:00,Richmond Hill,Event,Unplanned
 7/20/2020,NYISO,TDRP,16:00,22:00,6:00,Zones J1 J2 J3 J4 J5 J7 J8,Event,
 7/20/2020,Con Edison,CSRP,16:00,22:00,6:00,Non-Manhattan**,Event,Unplanned
 7/20/2020,Con Edison,DLRP,16:00,22:00,6:00,Non-Manhattan**,Event,Contingency

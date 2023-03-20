@@ -19,7 +19,7 @@ def main():
 	#setup test conditions
 	model = Model(participants, 8)
 
-	#model.runModel()
+	model.runModel()
 
 def generateParticipant(amount):
 
