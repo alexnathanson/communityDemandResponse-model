@@ -1,0 +1,84 @@
+Borough,Network,Start Time,End Time,Tier
+Bronx,Bronx CENTRAL BRONX 2:00 PM – 6:00 PM,,,2
+Bronx,Bronx FORDHAM 4:00 PM – 8:00 PM,,,2
+Bronx,Bronx NORTHEAST BRONX 4:00 PM – 8:00 PM,,,2
+Bronx,Bronx RIVERDALE 4:00 PM – 8:00 PM,,,1
+Bronx,Bronx SOUTHEAST BRONX 4:00 PM – 8:00 PM,,,2
+Bronx,Bronx WEST BRONX 4:00 PM – 8:00 PM,,,2
+Brooklyn,Brooklyn BAY RIDGE 2:00 PM – 6:00 PM,,,1
+Brooklyn,Brooklyn BOROUGH HALL 2:00 PM – 6:00 PM,,,2
+Brooklyn,Brooklyn BRIGHTON BEACH 2:00 PM – 6:00 PM,,,1
+Brooklyn,Brooklyn CROWN HEIGHTS 4:00 PM – 8:00 PM,,,1
+Brooklyn,Brooklyn FLATBUSH 4:00 PM – 8:00 PM,,,1
+Brooklyn,Brooklyn OCEAN PARKWAY 2:00 PM – 6:00 PM,,,2
+Brooklyn,Brooklyn PARK SLOPE 2:00 PM – 6:00 PM,,,1
+Brooklyn,Brooklyn PROSPECT PARK 4:00 PM – 8:00 PM,,,1
+Brooklyn,Brooklyn RIDGEWOOD 4:00 PM – 8:00 PM,,,2
+Brooklyn,Brooklyn SHEEPSHEAD BAY 4:00 PM – 8:00 PM,,,1
+Brooklyn,Brooklyn WILLIAMSBURG 2:00 PM – 6:00 PM,,,2
+Manhattan,Manhattan BATTERY PARK CITY 2:00 PM – 6:00 PM,,,1
+Manhattan,Manhattan BEEKMAN 11:00 AM – 3:00 PM,,,1
+Manhattan,Manhattan BOWLING GREEN 11:00 AM – 3:00 PM,,,1
+Manhattan,Manhattan CANAL 2:00 PM – 6:00 PM,,,1
+Manhattan,Manhattan CENTRAL PARK 2:00 PM – 6:00 PM,,,1
+Manhattan,Manhattan CHELSEA 2:00 PM – 6:00 PM,,,1
+Manhattan,Manhattan CITY HALL 11:00 AM – 3:00 PM,,,1
+Manhattan,Manhattan COLUMBUS CIRCLE 4:00 PM – 8:00 PM,,,1
+Manhattan,Manhattan COOPER SQUARE 2:00 PM – 6:00 PM,,,1
+Manhattan,Manhattan CORTLANDT 11:00 AM – 3:00 PM,,,1
+Manhattan,Manhattan EMPIRE 2:00 PM – 6:00 PM,,,1
+Manhattan,Manhattan FASHION 11:00 AM – 3:00 PM,,,1
+Manhattan,Manhattan FREEDOM 11:00 AM – 3:00 PM,,,1
+Manhattan,Manhattan FULTON 11:00 AM – 3:00 PM,,,1
+Manhattan,Manhattan GRAND CENTRAL 11:00 AM – 3:00 PM,,,1
+Manhattan,Manhattan GREELEY SQUARE 11:00 AM – 3:00 PM,,,1
+Manhattan,Manhattan GREENWICH 2:00 PM – 6:00 PM,,,1
+Manhattan,Manhattan HARLEM 2:00 PM – 6:00 PM,,,1
+Manhattan,Manhattan HERALD SQUARE 11:00 AM – 3:00 PM,,,1
+Manhattan,Manhattan HUDSON 2:00 PM – 6:00 PM,,,1
+Manhattan,Manhattan HUNTER 2:00 PM – 6:00 PM,,,1
+Manhattan,Manhattan KIPS BAY 2:00 PM – 6:00 PM,,,1
+Manhattan,Manhattan LENOX HILL 11:00 AM – 3:00 PM,,,1
+Manhattan,Manhattan LINCOLN SQUARE 11:00 AM – 3:00 PM,,,1
+Manhattan,Manhattan MADISON SQUARE 2:00 PM – 6:00 PM,,,1
+Manhattan,Manhattan MIDTOWN WEST 11:00 AM – 3:00 PM,,,1
+Manhattan,Manhattan PARK PLACE 11:00 AM – 3:00 PM,,,1
+Manhattan,Manhattan PENNSYLVANIA 11:00 AM – 3:00 PM,,,1
+Manhattan,Manhattan PLAZA 11:00 AM – 3:00 PM,,,1
+Manhattan,Manhattan RANDALL'S ISLAND 7:00 PM – 11:00 PM,,,1
+Manhattan,Manhattan ROCKEFELLER CENTER 11:00 AM – 3:00 PM,,,1
+Manhattan,Manhattan ROOSEVELT 2:00 PM – 6:00 PM,,,1
+Manhattan,Manhattan SHERIDAN SQUARE 2:00 PM – 6:00 PM,,,1
+Manhattan,Manhattan SUTTON 11:00 AM – 3:00 PM,,,1
+Manhattan,Manhattan TIMES SQUARE 11:00 AM – 3:00 PM,,,1
+Manhattan,Manhattan TRIBORO 2:00 PM – 6:00 PM,,,1
+Manhattan,Manhattan TURTLE BAY 11:00 AM – 3:00 PM,,,1
+Manhattan,Manhattan WASHINGTON HEIGHTS 2:00 PM – 6:00 PM,,,1
+Manhattan,Manhattan YORKVILLE 2:00 PM – 6:00 PM,,,1
+Queens,Queens BORDEN 2:00 PM – 6:00 PM,,,1
+Queens,Queens FLUSHING 2:00 PM – 6:00 PM,,,1
+Queens,Queens JACKSON HEIGHTS 4:00 PM – 8:00 PM,,,2
+Queens,Queens JAMAICA 4:00 PM – 8:00 PM,,,1
+Queens,Queens LONG ISLAND CITY 2:00 PM – 6:00 PM,,,1
+Queens,Queens MASPETH 4:00 PM – 8:00 PM,,,1
+Queens,Queens REGO PARK 4:00 PM – 8:00 PM,,,1
+Queens,Queens RICHMOND HILL 4:00 PM – 8:00 PM,,,1
+Queens,Queens SUNNYSIDE 4:00 PM – 8:00 PM,,,1
+Staten Island,Staten Island FOX HILLS 4:00 PM – 8:00 PM,,,1
+Staten Island,Staten Island FRESH KILLS 4:00 PM – 8:00 PM,,,1
+Staten Island,Staten Island WAINWRIGHT 4:00 PM – 8:00 PM,,,1
+Staten Island,Staten Island WILLOWBROOK 4:00 PM – 8:00 PM,,,1
+Staten Island,Staten Island WOODROW 4:00 PM – 8:00 PM,,,1
+Westchester,Westchester BUCHANAN 4:00 PM – 8:00 PM,,,1
+Westchester,Westchester CEDAR ST. 2:00 PM – 6:00 PM,,,1
+Westchester,Westchester ELMSFORD #2 2:00 PM – 6:00 PM,,,1
+Westchester,Westchester GRANITE HILL 4:00 PM – 8:00 PM,,,1
+Westchester,Westchester GRASSLANDS 2:00 PM – 6:00 PM,,,1
+Westchester,Westchester HARRISON 2:00 PM – 6:00 PM,,,1
+Westchester,Westchester MILLWOOD WEST 11:00 AM – 3:00 PM,,,1
+Westchester,Westchester MOHANSIC 4:00 PM – 8:00 PM,,,1
+Westchester,Westchester WASHINGTON ST. 4:00 PM – 8:00 PM,,,1
+Westchester,Westchester WHITE PLAINS 2:00 PM – 6:00 PM,,,1
+Westchester,Westchester PLEASANTVILLE 4:00 PM – 8:00 PM,,,1
+Westchester,Westchester ROCKVIEW 4:00 PM – 8:00 PM,,,1
+Westchester,Westchester OSSINING WEST 4:00 PM – 8:00 PM,,,1

@@ -3,7 +3,7 @@
 import re
 
 # Using readlines()
-file1 = open('data/DR-activitylog-raw.csv', 'r')
+file1 = open('DR-activitylog-raw.csv', 'r')
 Lines = file1.readlines()
   
 newLines = []
@@ -52,7 +52,7 @@ print(newLines)
     #print("Line{}: {}".format(count, line.strip()))
 
 l = 0
-with open('DR-program-history.csv', 'w') as f:
+with open('DR-program-history-cleaned.csv', 'w') as f:
     for line in newLines:
         l = l + 1
         f.write(line)
