@@ -3,12 +3,11 @@ from DemandResponsePrograms import ConEd
 from DemandResponseAggregation import Model, Participant, Production, Storage
 import json
 
-#test data
-testEvent =[[4,"Con Edison","CSRP",11,15,4,"All","Event","Planned"],
-	[5,"Con Edison","CSRP",11,15,4,"All","Event","Planned"],
-	[16,"Con Edison","CSRP",11,15,4,"All","Event","Planned"]]
+# testEvent =[[4,"Con Edison","CSRP",11,15,4,"All","Event","Planned"],
+# 	[5,"Con Edison","CSRP",11,15,4,"All","Event","Planned"],
+# 	[16,"Con Edison","CSRP",11,15,4,"All","Event","Planned"]]
 
-testHardware = {'pvW': 50, 'batAh':50,'batVol':24}
+#testHardware = {'pvW': 50, 'batAh':50,'batVol':24}
 
 def main():
 	print('running')

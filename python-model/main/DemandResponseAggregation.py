@@ -149,21 +149,34 @@ class Model:
     return filteredLogDF
 
   def printReport(self, pL):
+    allLines = []
     tp = "August 2022"
     nE = len(pL)
-    print('')
-    print("*** Demand Response Aggregation Model Report ***")
-    print("Time period: " + str(tp))
-    print("# Events: " + str(nE))
+
+    allLines.append("*** Demand Response Aggregation Model Report ***")
+    allLines.append("Time period: " + str(tp))
+    allLines.append("# Events: " + str(nE))
 
     tP = 0
     for p in pL:
       tP = tP + p
     tP = tP / len(pL)
 
-    print("Participation History: " + str(pL))
-    print("Overall Participation Rate: " + str(tP))
-  
+    allLines.append("Participation History: " + str(pL))
+    allLines.append("Overall Participation Rate: " + str(tP))
+
+    print('')
+    for l in allLines:
+      print(l)
+
+    print(self.saveReport(allLines))
+
+  def saveReport(self,txtLines):
+    fN = 'report-' + datetime.now().strftime('%m-%d-%Y-%H-%M')+'.txt'
+    with open('reports/' + fN, 'w') as f:
+      f.write('\n'.join(txtLines))
+    return(fN)
+
 class Participant:
   def __init__(self, network):
     #self.zone = zone #zone is only used by NYISO
