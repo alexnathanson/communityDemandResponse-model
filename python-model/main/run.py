@@ -26,10 +26,11 @@ def generateParticipant(amount):
 	participants = []
 
 	for i in range(amount):
-		participants.append(Participant('crown heights'))
-		#add production capacity
-		participants[i].production = Production()
-		#add storage capacity
+		#instantiate participants in Crown Heights with 500W reservation
+		participants.append(Participant('crown heights', 500))
+		#add production capacity (pv W, wind W)
+		participants[i].production = Production(50,0)
+		#add storage capacity (aH,voltage)
 		participants[i].storage = Storage(50, 24)
 		#add DR programs
 		participants[i].programs.append(ConEd('CSRP',participants[i].network, participants[i].demandResponseCapcity_W))

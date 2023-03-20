@@ -9,8 +9,13 @@ class Model:
     self.month = month
     self.daysInMonth = self.getDIM(self.month)
     self.weather = self.toyWeatherData(self.daysInMonth)
+    self.report = []
 
   def runModel(self):
+    #start new test report
+    self.report = ["*** Demand Response Aggregation Model Report ***",
+      "participants: " + str(len(self.participants))]
+
     print('')
     print("*** RUNNING MODEL ***")
     participationRate = []
@@ -84,7 +89,7 @@ class Model:
 
   #returns the amount of days in a given month
   def getDIM(self,m):
-    days = [31,28,31,31,30,31,30,31,30,31,30,31]
+    days = [31,28,31,30,31,30,31,31,30,31,30,31]
     return days[m-1]
 
   def toyWeatherData(self,amtD):
@@ -153,7 +158,6 @@ class Model:
     tp = "August 2022"
     nE = len(pL)
 
-    allLines.append("*** Demand Response Aggregation Model Report ***")
     allLines.append("Time period: " + str(tp))
     allLines.append("# Events: " + str(nE))
 
@@ -165,11 +169,14 @@ class Model:
     allLines.append("Participation History: " + str(pL))
     allLines.append("Overall Participation Rate: " + str(tP))
 
-    print('')
     for l in allLines:
+      self.report.append(l)
+
+    print('')
+    for l in self.report:
       print(l)
 
-    print(self.saveReport(allLines))
+    print(self.saveReport(self.report))
 
   def saveReport(self,txtLines):
     fN = 'report-' + datetime.now().strftime('%m-%d-%Y-%H-%M')+'.txt'
@@ -178,12 +185,12 @@ class Model:
     return(fN)
 
 class Participant:
-  def __init__(self, network):
+  def __init__(self, network, reservation):
     #self.zone = zone #zone is only used by NYISO
     self.network = network
     self.programs = []
     self.latlong = []
-    self.demandResponseCapcity_W = 500
+    self.demandResponseCapcity_W = reservation
     self.storage = {}
     self.production = {}
     self.load = {}
@@ -200,10 +207,10 @@ class Participant:
               )
 
 class Production:
-  def __init__(self):
-    self.pvProductionCapacity_W = 50 #PV array size in watts
+  def __init__(self,capacityPV, capacityWind):
+    self.pvProductionCapacity_W = capacityPV #PV array size in watts
     self.pvExposure = 50 #percentage of peak sun hours
-    self.windProductionCapcity_W = 0
+    self.windProductionCapcity_W = capacityWind
 
   def __repr__(self):
         return "<{klass} @{id:x} {attrs}>".format(

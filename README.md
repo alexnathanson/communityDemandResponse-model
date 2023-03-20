@@ -59,3 +59,35 @@ Spec participant system, calculate how it would work for them over a 1 month per
 
 ## Run
 
+# Research Problems
+
+interviews
+
+solve the problem without adding gadgets
+
+state bias in intercviews
+what i am getting at
+what i expect the result to be
+and if it proves or disproves
+
+hypothesis: a group of people in a enrgy initiative...
+
+software:
+get a number
+* whats the minimum amount of people i need to agregate?
+* how does the uncertaintly of what kind of unit increase or decrease the amount of participants?
+* now that I have detected I need X amount of units - what can't be done with automated tech economically
+* if i don't have this tech, how many units are needed of X% of people manually participate
+
+To do:
+diagram code
+diagram questions
+reiterate on hypothesis, objective, goal, expected outcomes
+
+software to do:
+add weather
+add grid for batteries
+
+when to turn off battery output
+
+## 

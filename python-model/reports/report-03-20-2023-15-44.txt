@@ -1,0 +1,6 @@
+*** Demand Response Aggregation Model Report ***
+participants: 1
+Time period: August 2022
+# Events: 4
+Participation History: [0.3, 0.0, 0.23092236382431847, 0.0]
+Overall Participation Rate: 0.1327305909560796
