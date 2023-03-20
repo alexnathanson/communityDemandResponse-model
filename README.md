@@ -15,13 +15,24 @@ weather data
 
 # Setup
 
-## Create virtual environment
+##  Virtual environment
 
+### To install
 `python -m venv venv`
 
-To activate
+### To activate
 
 `<venv>\Scripts\activate.bat`
+
+### To freeze depencies
+
+in the ve
+`pip freeze > requirements.txt`
+
+### to install
+
+in ve
+`pip install -r requirements.txt`
 
 # Psuedo
 
