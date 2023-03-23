@@ -26,12 +26,12 @@ weather data
 
 ### To freeze depencies
 
-in the ve
+in the venv
 `pip freeze > requirements.txt`
 
 ### to install
 
-in ve
+in venv
 `pip install -r requirements.txt`
 
 # Psuedo
@@ -90,4 +90,20 @@ add grid for batteries
 
 when to turn off battery output
 
-## 
+## Present the high-level concepts
+
+explain problem
+how it tacjkes problem at a specific scale and how it expands
+discuss the research by presenting what is difficult about what im doing
+* what does no one know / what is the new thing
+* methods
+
+write a complete list of all features and functions (internal or external) to solve the problem
+* history of participation
+* phone
+* email
+* etc
+* make it as exhaustive as possible - assume every feature is there to solve the problem in the most efficient way
+
+
+goal: minimum amount of tech to solve the problem
