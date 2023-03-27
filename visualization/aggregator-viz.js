@@ -6,7 +6,7 @@ let infoBarY = 70
 let canvasX = 1000;
 let canvasY = canvasX* imgRatio;
 
-let amtP  = 10;
+let amtP  = 15;
 let participants = [];
 
 let daysInMonth = [31,28,31,30,31,30,31,31,30,31,30,31];
@@ -17,12 +17,12 @@ let date, clock, day
 let prevHour = -1;
 
 let events = [];
-let event21=[3,4,8,12]; //days events occur with 21 hr advanced notice
+let event21=[3,4,8,12,30]; //days events occur with 21 hr advanced notice
 let event2=[5,6,25]; //days events occur with 2 hr advanced notice
 
 let eventNow = false;
 
-let partC, batC, alertC,timeC, elapsedTimeC, autoC;
+let partC, batC, alertC,timeC, elapsedTimeC, autoC, manuC;
 
 //low T, high T,sky (100 = clear, 0 = rain)
 let augTemp22 = [[72,75,.7],[73,88,1.0],[79,86,1.0],[77,90,1.0],[81,90,.75],[79,86,.2]]
@@ -30,6 +30,9 @@ let augTemp22 = [[72,75,.7],[73,88,1.0],[79,86,1.0],[77,90,1.0],[81,90,.75],[79,
 let clockOffset = 0;
 
 let loopIt = false;
+
+//modes for battery charging: grid, solar
+let mode = 'solar';
 
 function preload() {
   img = loadImage('assets/crownheights-googlemaps.png');
@@ -45,9 +48,10 @@ function setup() {
   alertC = color(255,100,0);
   timeC = color(150,150,255);
   elapsedTimeC = color(255,255,100);
+  manuC = color(100,150,255);
 
   createCanvas(canvasX,canvasY+infoBarY);
-  background(153)
+  background(255)
   img.resize(canvasX,canvasY)
 
   //place circles
@@ -67,8 +71,9 @@ function setup() {
 }
 
 function draw(){
+
   //100ms viz = 1 hour irl
-  clock = millis()/100 - clockOffset;
+  clock = millis()/50 - clockOffset;
   //new Date(year,month,day,hours)
   //console.log(1+int(clock/23));
   day = int(clock/24)+1;
@@ -77,6 +82,10 @@ function draw(){
   let eventFlag = false;
 
   if(day<=daysInMonth[testMonth-1]){
+    /*if(day == 1){
+      saveFrames('out', 'png', 1, 25);
+    }*/
+
     date = new Date(2022,testMonth-1,day, int(clock% 24)).toLocaleString();
 
     //check for eventsignal
@@ -92,7 +101,7 @@ function draw(){
       if (s.isNow(int(clock))==true){
         //check if the event is just starting
         if (eventNow== false){
-          console.log("NEW EVENT!")
+          //console.log("NEW EVENT!")
           for(let p=0; p < participants.length;p++){
             participants[p].updateParticipation();
           }
@@ -105,19 +114,23 @@ function draw(){
     }
     eventNow= eF;
 
+    /**** COMMENT OUT FOR WHITE BACKGROUND***/
     if(eventFlag){
       background(alertC);
     } else {
       background(200);
     }
 
-
-    //background(150,0,0);
     image(img, 0,0);
 
     //day light overlay
-    fill(0,0,0,map(min(abs(12-clock%24),6),0,6,0,150));
+    fill(0,0,0,map(min(abs(12-clock%24),6),0,6,50,120));
     rect(0,0,canvasX,canvasY);
+
+    /*** END COMMENT OUT FOR WHITE BACKGROUND ***/
+
+    /*** COMMENT IN FOR WHITE BACKGROUND ***/
+    //background(255);
 
     //hourly activity
     if(int(clock) != prevHour){
@@ -137,11 +150,12 @@ function draw(){
       
     }
 
-    drawInfoBar(eventFlag);
 
     for(let p=0; p < participants.length;p++){
       participants[p].drawP(eventFlag, eventNow);
     }
+
+    drawInfoBar(eventFlag);
 
     drawClock(canvasX-(infoBarY*.5),canvasY+(infoBarY*.5), clock, eventFlag);
 
@@ -153,38 +167,45 @@ function draw(){
   }
 
   drawKey();
-  
+
+}
+
+function outputFrames(){
+  saveFrames('out', 'png', 1, 25);
 }
 
 function drawKey(){
   let kY = 15;
   let kH = 25;
   let kX = 15;
-  let kW = 120;
+  let kW = 145;
 
   push()
     textSize(14);
     strokeWeight(20);
     stroke(partC);
     line(kX,kY,kX+kW,kY);
-    stroke(autoC);
+    stroke(manuC);
     line(kX,kY+kH,kX+kW,kY+kH);
-    stroke(batC);
+    stroke(autoC);
     line(kX,kY + (kH *2),kX+kW,kY + (kH *2));
-    stroke(alertC);
+    stroke(batC);
     line(kX,kY + (kH *3),kX+kW,kY + (kH *3));
     stroke(alertC);
     line(kX,kY + (kH *4),kX+kW,kY + (kH *4));
+    stroke(alertC);
+    line(kX,kY + (kH *5),kX+kW,kY + (kH *5));
     
     textStyle(NORMAL);
     textAlign(CENTER, CENTER);
     fill(0);
     noStroke();
-    text("Tot Participation Rate", kX+kW*.5, kY);
-    text("Auto Replacement ", kX+kW*.5, kY + kH);
-    text("Battery Percentage",kX+kW*.5, kY + (kH *2));
-    text("Upcoming Event",kX+kW*.5, kY + (kH *3));
-    text("! = Event Occurance",kX+kW*.5, kY + (kH *4));
+    text("Tot Avg Participation Rate", kX+kW*.5, kY);
+    text("Avg Manual Curtailment", kX+kW*.5, kY + kH);
+    text("Avg Auto Replacement", kX+kW*.5, kY + (kH *2));
+    text("Battery Percentage",kX+kW*.5, kY + (kH *3));
+    text("Upcoming Event",kX+kW*.5, kY + (kH *4));
+    text("! = Event Occurance",kX+kW*.5, kY + (kH *5));
   pop()
 }
 
@@ -222,7 +243,7 @@ function drawInfoBar(evF){
   text(date, 20, canvasY+25);
   //text("TIME: " + (millis()/1000), 100,canvasY+25);
 
-  text("Average Network Participation Rate: " + getTotAvgParticipation() + "%", 400, canvasY+25);
+  text("Average Network Participation Rate: " + getTotAvgParticipation() + "% ($" + getAvgIncome() + " per participant)", 400, canvasY+25);
 
   //draw event flag
   //check for past events
@@ -249,6 +270,16 @@ function getTotAvgParticipation(){
   }
 
   return round((aP/participants.length)*100,2)
+}
+
+function getAvgIncome(){
+  let aP = 0;
+  for (let p of participants){
+    aP = aP + p.participationRateAvg
+  }
+
+  //avg participation * 18/kW * .5kW * 2 programs
+  return round((aP/participants.length) * 18 * 0.5 * 2,2)
 }
 
 function drawWeather(dW){
@@ -286,15 +317,28 @@ function drawClock(cX,cY,c,eF){
 class Participant{
   constructor(pX,pY){
     this.batPerc = 1.0;
-    this.participationRateAvg = 1.0;
-    this.participationHistory = [];
+    this.participationRateAvg = 1.0;//total participation (auto + manual)
+    this.participationHistory = [];//total participation (auto + manual)
+    this.automatedReplacementHistory = [];
+    this.automatedReplacementHistoryAvg = 1.0;
+    this.manualCurtailmentHistory = [];
+    this.manualCurtailmentHistoryAvg = 1.0;
     this.location = [pX,pY];
-    this.loadW = int(random(50,100));
-    this.batWh = int(random(300,700));
+    this.loadW = 500;
+    this.batWh = 1000/*int(random(600,800));*/
     this.chargeW = int(this.batWh /6); //full charge within 6 hrs
     this.participationHistory = [];
-    this.reservationW=500
-    this.reservationWh = this.reservationW * 4 //this should be event length variable
+    this.reservationW=500;
+    this.eventDuration = 4; //this should be fed in from events
+    this.reservationWh = this.reservationW * this.eventDuration
+    this.eventStartTime = this.getStartTime(); //not currently in use
+    this.manualParticipationRate = random(0.15,0.5);
+    //communication methods
+    this.phone = true;
+    this.sms = true;
+    this.email = true;
+    this.iot = true;
+    this.interfaceIndicator = true;
   }
 
   updateEnergyDraw(){
@@ -304,24 +348,88 @@ class Participant{
 
   updateEnergyChargePV(){
     let h= int(clock%24);
-    if(h > 9 && h < 15){
+
+    let c = false;
+    if(mode == 'grid'){
+      //grid at cheapest time of day
+      if(h > 20 || h < 5){
+        c= true;
+      }
+    } else if (mode == 'solar'){
+      //peak sun hours
+      if(h > 9 && h < 15){
+        c=true;
+      }
+    }
+
+    if(c){
       this.batPerc = min(this.batPerc + (this.chargeW/this.batWh),1.0);
     }
   }
 
+  //this needs work
   updateParticipation(){
-    this.updateAutoReplacement();
-  }
+    let autoP = min((this.batPerc * this.batWh)/this.reservationWh,1.0);
+    //let manuP = (1 - autoP) * this.manualParticipationRate;
+    this.updateAutoReplacement(autoP);
+    let manuP = this.updateManualCurtailment(autoP)
 
-  updateAutoReplacement(){
-    console.log(this.batPerc * this.batWh);
-    this.participationHistory.push(min((this.batPerc * this.batWh)/this.reservationWh,1.0))
+    this.participationHistory.push(min(autoP+manuP,1.0));
 
     let a = 0;
     for(let p of this.participationHistory){
       a = a + p;
     }
     this.participationRateAvg = a/this.participationHistory.length;
+
+    //console.log([this.automatedReplacementHistoryAvg,this.manualCurtailmentHistoryAvg, this.participationRateAvg])
+  }
+
+  updateAutoReplacement(p){
+    //console.log(this.batPerc * this.batWh);
+    this.automatedReplacementHistory.push(p)
+
+    let a = 0;
+    for(let p of this.automatedReplacementHistory){
+      a = a + p;
+    }
+    this.automatedReplacementHistoryAvg = a/this.automatedReplacementHistory.length;
+  }
+
+  updateManualCurtailment(p){
+    
+    let s = 0;
+
+    //every hour (remaining after auto replacement) random chance of participating
+    //once the stop participating they are done for the remainder of the event
+    for (let i =0;i < int(1-(this.eventDuration*p));i++){
+      if(random() < this.manualParticipationRate){
+        s = s + (1/this.eventDuration);
+      } else {
+        break;
+      }
+    }
+
+    this.manualCurtailmentHistory.push(s);
+
+    this.updateManualCurtailmentAvg();
+
+    return s;
+  }
+
+  updateManualCurtailmentAvg(){
+
+    let a = 0;
+    for(let p of this.manualCurtailmentHistory){
+      a = a + p;
+    }
+    this.manualCurtailmentHistoryAvg = a/this.manualCurtailmentHistory.length;
+  }
+
+  getStartTime(){
+    let eventStartOptions = [11,14,16,19];
+
+    return random(eventStartOptions);
   }
 
   drawP(evFuture,evNow){
@@ -359,15 +467,20 @@ class Participant{
       stroke(batC)
       arc(this.location[0],this.location[1], 30,30, -HALF_PI, this.percToRad(this.batPerc)-HALF_PI);
 
-      //tot participation
+      //auto participation
       noFill();
       stroke(autoC)
-      arc(this.location[0],this.location[1], 45,45, -HALF_PI, this.percToRad(this.participationRateAvg)-HALF_PI);
+      arc(this.location[0],this.location[1], 45,45, -HALF_PI, this.percToRad(this.automatedReplacementHistoryAvg)-HALF_PI);
+
+      //manual participation
+      noFill();
+      stroke(manuC)
+      arc(this.location[0],this.location[1], 60,60, -HALF_PI, this.percToRad(this.manualCurtailmentHistoryAvg)-HALF_PI);
 
       //tot participation
       noFill();
       stroke(partC)
-      arc(this.location[0],this.location[1], 60, 60, -HALF_PI, this.percToRad(this.participationRateAvg)-HALF_PI);
+      arc(this.location[0],this.location[1], 75,75, -HALF_PI, this.percToRad(this.participationRateAvg)-HALF_PI);
     pop();
   }
 
@@ -387,7 +500,7 @@ class Event{
   this.alertTotHour = this.getAlert_TotHour(this.startTotHour, this.alert); //event alert time converted to total elapsed hours in the month
   this.upcoming = false; //flag raised between when alert is sent and when event ends
   this.now = false;
-  this.participationRate = 100; //percentage of total participation
+  //this.participationRate = 100; //percentage of total participation
  }
 
   //get to hours elapsed since beginning of the month
