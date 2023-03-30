@@ -3,7 +3,7 @@ let imgX = 1713;
 let imgY = 964;
 let imgRatio = imgY/imgX;
 let infoBarY = 70
-let canvasX = 1000;
+let canvasX = windowWidth;
 let canvasY = canvasX* imgRatio;
 
 let amtP  = 15;

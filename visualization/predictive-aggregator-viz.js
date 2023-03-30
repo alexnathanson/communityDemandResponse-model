@@ -32,7 +32,7 @@ let clockOffset = 0;
 let loopIt = false;
 
 //modes for battery charging: grid, solar
-let mode = 'grid';
+let mode = 'solar';
 
 //flag for prediction
 let eventLikely = false;
@@ -78,7 +78,7 @@ function setup() {
 function draw(){
 
   //100ms viz = 1 hour irl
-  clock = millis()/50 - clockOffset;
+  clock = millis()/200 - clockOffset;
   //new Date(year,month,day,hours)
   //console.log(1+int(clock/23));
   day = int(clock/24)+1;
@@ -371,7 +371,7 @@ class Participant{
     this.manualCurtailmentHistoryAvg = 1.0;
     this.location = [pX,pY];
     this.loadW = 500;
-    this.batWh = 600/*int(random(500,2000))*/;
+    this.batWh = int(random(500,2000));
     this.chargeW = int(this.batWh /6); //full charge within 6 hrs
     this.participationHistory = [];
     this.reservationW=500;
