@@ -2,9 +2,7 @@ let img;
 let imgX = 1713;
 let imgY = 964;
 let imgRatio = imgY/imgX;
-let infoBarY = 70
-let canvasX = 1000;
-let canvasY = canvasX* imgRatio;
+let canvasX, canvasY;
 
 let posPV = { x: 50, y: 100};
 let posBatX = 425
@@ -12,15 +10,25 @@ let posGridX = 750
 
 let pvWire,gridWire, loadWire;
 
-let clock, timeC
+let timeC
+
+let weather
 
 function preload() {
   img = loadImage('assets/crownheights-googlemaps.png');
+
+  //move this to prediction script
+  weather = loadTable('data/nyc-weather-aug2022-cleaned.csv', 'csv', 'header');
+
 }
 
 function setup() {
+  predictionSetup()
 
-  createCanvas(canvasX,canvasY+infoBarY);
+  canvasX = windowWidth-20;
+  canvasY = windowHeight;
+
+  createCanvas(canvasX,canvasY);
   background(255)
   img.resize(canvasX,canvasY)
 
@@ -33,11 +41,12 @@ function setup() {
   bat.centerY(pv.center.y)
 
   load = new Load(100,100, 2);
-  load.centerX(outlet.center.x)
+  load.centerX((bat.center.x + outlet.center.x) * .5)
 
   pvWire = new Wire(pv.center.x,pv.center.y,bat.center.x,bat.center.y,-1);
-  gridWire = new Wire(outlet.center.x,outlet.center.y,bat.center.x,bat.center.y,-1);
-  loadWire = new Wire(outlet.center.x,outlet.center.y,load.center.x,load.center.y,-1);
+  gridWire = new Wire(outlet.center.x,outlet.center.y,bat.center.x,bat.center.y,1);
+  loadWire = new Wire(outlet.center.x,outlet.center.y,load.center.x,load.center.y,1);
+  loadWireB = new Wire(bat.center.x,bat.center.y,load.center.x,load.center.y,-1);
   //loadWire.animate = 2
 
   timeC = color(150,150,255);
@@ -46,12 +55,9 @@ function setup() {
 
 function draw(){
 
-  //100ms viz = 1 hour irl
-  clock = millis()/500;
-  //new Date(year,month,day,hours)
-  //console.log(1+it(clock/23));
-  day = int(clock/24)+1;
-  //hour = clock% 24;
+  predictionLoop()
+  //clock = millis()/500;
+  //day = int(clock/24)+1;
 
   //background(200)
 
@@ -61,9 +67,16 @@ function draw(){
   fill(0,0,0,map(min(abs(12-clock%24),6),0,6,50,120));
   rect(0,0,canvasX,canvasY);
 
+
+  if(participants[0].batPerc == 0){
+    loadWireB.state = false
+  } else {
+    loadWireB.state = true
+  }
   pvWire.draw()
   gridWire.draw()
   loadWire.draw()
+  loadWireB.draw()
 
   pv.draw()
   bat.draw()
@@ -228,16 +241,21 @@ class PVModule extends Component{
     this.pvAmtY = int(this.h/this.pD);
     this.pMarginY = (this.h - (this.pD*this.pvAmtY))/(this.pvAmtY+1);
     this.center = this.setCenter();
+    this.backSheetColor = color(255);
   }
 
   draw(){
     push();
       translate(this.x,this.y)
+
+      //frame
       fill(200,200,255);
       rect(this.pFrame* -1,this.pFrame* -1, this.w + this.pFrame*2, this.h + this.pFrame * 2);
-      fill(this.color)
+      //backsheet
+      fill(this.backSheetColor)
       rect(0,0,this.w,this.h);
 
+      //cells
       fill(0,0,200)
       for (let x = 0; x < this.pvAmtX ;x++){
         for(let y = 0; y<this.pvAmtY;y++){
@@ -260,7 +278,8 @@ class Battery extends Component{
     this.h = 50 * this.scale;
     //this.center =  { x: this.x + (this.w * .5), y: this.y + (this.h * .5)};
     this.center = this.setCenter();
-
+    this.status = 0.75
+    this.color = color(200)
   }
 
   draw(){
@@ -269,6 +288,10 @@ class Battery extends Component{
       translate(this.x,this.y)
       fill(this.color);
       rect(0,0,this.w,this.h);
+
+      //status
+      fill(255,255,0)
+      rect(3,this.h * (1-this.status),this.w-6,this.h * this.status -3)
 
       fill(230,230,255)
       //terminal 1
@@ -293,25 +316,44 @@ class Load extends Component{
     this.w = 25 * this.scale;
     this.h = 40 * this.scale;
     this.center = this.setCenter();
+    this.on = true;
+    this.color = this.setColor();
 
   }
 
   draw(){
+    
+    this.setColor();
+
     push();
+
+      translate(this.x,this.y)
+
+      strokeWeight(10)
+      stroke(200,200,255)
+      line(10,13,this.w-10,10)
+      line(11,24,this.w-11,21)
+      line(14,35,this.w-14,32)
+
       fill(this.color);
       noStroke();
-      translate(this.x,this.y)
-      rect(0,0,this.w,this.h*.1,5);
 
-      circle(this.w*.5,this.h*-.4, this.h,this.h);
-      strokeWeight(14)
-      stroke(200,200,255)
-      line(10,16,this.w-10,16)
-      line(12,31,this.w-12,31)
-      line(20,46,this.w-20,46)
+      circle(this.w*.5,this.h*-.4,this.h);
+      
+      fill(255)
+      rect(0,0,this.w,this.h*.09,5);
+
 
 
     pop();
+  }
+
+  setColor(){
+    if(this.on){
+      this.color = color (255,255,0,230)
+    } else {
+      this.color = color(255,200)
+    }
   }
 }
 
@@ -323,7 +365,7 @@ class EdisonOutlet extends Component{
     this.h = 50 * this.scale;
     //this.center = { x: this.x + (this.w * .5), y: this.y + (this.h * .5)};
     this.center = this.setCenter();
-
+    this.color = color (200,255,200)
   }
 
   draw(){
@@ -367,7 +409,9 @@ class Wire{
     this.wireThickness = 15;
     this.wireColor = color(0,0,0,255);
     this.distance=dist(this.startX,this.startY,this.endX,this.endY);
-    this.animate = 1;
+    this.height = this.startY - this.endY
+    this.width = this.startX - this.endX
+    this.state = true;
   }
 
   draw(){
@@ -390,20 +434,36 @@ class Wire{
 
       let tD = this.wireThickness * .3
 
-      for (let a = 0; a < 10;a++){
-        let pointX=this.startX + (xUnit*a);
-        let pointY=this.startY + ((this.endY - this.startY)/10)*a;
+      if(this.state){
+        for (let a = 0; a < 10;a++){
+          let pointX=this.startX + (xUnit*a);
+          let pointY=this.startY + ((this.endY - this.startY)/10)*a;
 
 
-        if(int(clock/2) % 2 == 0 ){
-          pointX = pointX + ((this.startX - this.endX) *.05);
-          pointY = pointY + ((this.startY - this.endY) *.05);
+          if(int(clock/2) % 2 == 0 ){
+            pointX = pointX + ((this.startX - this.endX) *.05);
+            pointY = pointY + ((this.startY - this.endY) *.05);
+          }
+          
+          push()
+            translate(pointX, pointY)
+            rotate(this.getRotation())
+            //triangle(pointX, pointY, pointX+(tD* this.direction), pointY+tD,pointX+(tD* this.direction), pointY-tD)
+            triangle(0,0, (tD* this.direction), tD,(tD* this.direction), -tD)
+          pop()
         }
-        
-
-        triangle(pointX, pointY, pointX+(tD* this.direction), pointY+tD,pointX+(tD* this.direction), pointY-tD)
       }
+      
     pop();
+  }
+
+  getRotation(){
+    let a = this.height/this.distance
+
+    if (this.width < 0){
+      a = a * -1;
+    }
+    return a;
   }
 
 

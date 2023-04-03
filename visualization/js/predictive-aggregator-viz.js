@@ -3,8 +3,7 @@ let imgX = 1713;
 let imgY = 964;
 let imgRatio = imgY/imgX;
 let infoBarY = 70
-let canvasX = 1000;
-let canvasY = canvasX* imgRatio;
+let canvasX, canvasY
 
 let amtP  = 15;
 let participants = [];
@@ -46,6 +45,8 @@ function preload() {
 }
 
 function setup() {
+  canvasX = windowWidth-20;
+  canvasY = canvasX* imgRatio;
 
   partC = color(0,255,0);
   autoC = color(255,150,255);
