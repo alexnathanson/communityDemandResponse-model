@@ -29,7 +29,7 @@ let augTemp22 = [[72,75,.7],[73,88,1.0],[79,86,1.0],[77,90,1.0],[81,90,.75],[79,
 
 let clockOffset = 0;
 
-let loopIt = false;
+let loopIt = true;
 
 //modes for battery charging: grid, solar
 let mode = 'grid';
