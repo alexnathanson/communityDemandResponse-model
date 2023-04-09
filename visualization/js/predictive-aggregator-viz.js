@@ -3,8 +3,7 @@ let imgX = 1713;
 let imgY = 964;
 let imgRatio = imgY/imgX;
 let infoBarY = 70
-let canvasX = 1000;
-let canvasY = canvasX* imgRatio;
+let canvasX, canvasY
 
 let amtP  = 15;
 let participants = [];
@@ -17,8 +16,8 @@ let date, clock, day
 let prevHour = -1;
 
 let events = [];
-let event21=[4,5,8,9]; //days events occur with 21 hr advanced notice
-let event2=[9]; //days events occur with 2 hr advanced notice
+let event21=[4,5]; //days events occur with 21 hr advanced notice
+let event2=[8,9]; //days events occur with 2 hr advanced notice
 
 let eventNow = false;
 
@@ -32,7 +31,12 @@ let clockOffset = 0;
 let loopIt = false;
 
 //modes for battery charging: grid, solar
-let mode = 'grid';
+let mode = 'solar';
+
+//flag for prediction
+let eventLikely = false;
+let tThresh = 85;
+let predictMode = true;
 
 function preload() {
   img = loadImage('assets/crownheights-googlemaps.png');
@@ -41,6 +45,8 @@ function preload() {
 }
 
 function setup() {
+  canvasX = windowWidth-20;
+  canvasY = canvasX* imgRatio;
 
   partC = color(0,255,0);
   autoC = color(255,150,255);
@@ -73,7 +79,7 @@ function setup() {
 function draw(){
 
   //100ms viz = 1 hour irl
-  clock = millis()/50 - clockOffset;
+  clock = millis()/200 - clockOffset;
   //new Date(year,month,day,hours)
   //console.log(1+int(clock/23));
   day = int(clock/24)+1;
@@ -85,6 +91,8 @@ function draw(){
     /*if(day == 1){
       saveFrames('out', 'png', 1, 25);
     }*/
+
+    tempPrediction()
 
     date = new Date(2022,testMonth-1,day, int(clock% 24)).toLocaleString();
 
@@ -138,8 +146,10 @@ function draw(){
       
       //update energy consumption if event is not anticipated
       if(eventFlag == false || eventNow == true){
-        for(let p=0; p < participants.length;p++){
-          participants[p].updateEnergyDraw();
+        if(eventLikely == false){
+          for(let p=0; p < participants.length;p++){
+            participants[p].updateEnergyDraw();
+          }
         }
       }
 
@@ -206,6 +216,17 @@ function drawKey(){
     text("Battery Percentage",kX+kW*.5, kY + (kH *3));
     text("Upcoming Event",kX+kW*.5, kY + (kH *4));
     text("! = Event Occurance",kX+kW*.5, kY + (kH *5));
+
+    stroke(200,200,200);
+    line(kX,kY + (kH *6),kX+kW,kY + (kH *6));
+    fill(0);
+    noStroke();
+    if(predictMode){
+      
+      text("Prediction Mode On",kX+kW*.5, kY + (kH *6));
+    } else {
+      text("Prediction Mode Off",kX+kW*.5, kY + (kH *6));
+    }
   pop()
 }
 
@@ -240,7 +261,7 @@ function drawInfoBar(evF){
   //TEXT
   noStroke();
   fill(0);
-  text(date, 20, canvasY+25);
+  text(date, 60, canvasY+25);
   //text("TIME: " + (millis()/1000), 100,canvasY+25);
 
   text("Average Network Participation Rate: " + getTotAvgParticipation() + "% ($" + getAvgIncome() + " per participant)", 400, canvasY+25);
@@ -259,7 +280,7 @@ function drawInfoBar(evF){
     }
   }
 
-  //drawWeather(dW);
+  drawWeather(dW);
   
 }
 
@@ -283,21 +304,47 @@ function getAvgIncome(){
 }
 
 function drawWeather(dW){
+  //fix this...
+  dWH = dW * .5;
+
+  push()
+    textSize(12);
+    textAlign(LEFT, CENTER);
+    text("100F", 5,canvasY+infoBarY-45);
+    //line(0,canvasY+infoBarY-45,10,canvasY+infoBarY-45)
+    text("TEMP", 5,canvasY+infoBarY-25);
+    text("70F", 5,canvasY+infoBarY-5);
+    //line(0,canvasY+infoBarY-2,10,canvasY+infoBarY-2)
+  pop();
   //loop through all elapsed days
-  for (let d = 1; d <= int(day); d++){
+  for (let d = 0; d < int(day)-1; d++){
     /*//check for past events
     for (let s of events){
       if ((d * 24) - 24 > s.startTotHour && (d * 24) - 24 < s.startTotHour + 24){
         circle((d*dW)-(dW*.5),canvasY+infoBarY-20,15);
       }
     }*/
-    if(d>=1){
+    
       wT = weather.getColumn('Max_Temp');
       stroke(0);
-      line((d-1)*dW,map(wT[d-2],0,100,canvasY+infoBarY,canvasY+infoBarY-45),
-        (d*dW),map(wT[d-1],0,100,canvasY+infoBarY,canvasY+infoBarY-45));
+      line((d)*dW +dWH,map(wT[d],70,100,canvasY+infoBarY,canvasY+infoBarY-45),
+        ((d+1)*dW)+dWH,map(wT[d+1],70,100,canvasY+infoBarY,canvasY+infoBarY-45));
+  }
+}
+
+function tempPrediction(){
+  eventLikely = false;
+
+  wT = weather.getColumn('Max_Temp');
+
+  //let avgMaxT = (wT[day-1] + wT[day-2])*.5;
+
+  if (predictMode){
+    if (wT[day-1] >tThresh || wT[day] > tThresh){
+      eventLikely = true;
     }
   }
+
 }
 
 function drawClock(cX,cY,c,eF){
@@ -325,14 +372,14 @@ class Participant{
     this.manualCurtailmentHistoryAvg = 1.0;
     this.location = [pX,pY];
     this.loadW = 500;
-    this.batWh = 1000/*int(random(500,2000))*/;
+    this.batWh = int(random(500,2000));
     this.chargeW = int(this.batWh /6); //full charge within 6 hrs
     this.participationHistory = [];
     this.reservationW=500;
     this.eventDuration = 4; //this should be fed in from events
     this.reservationWh = this.reservationW * this.eventDuration
     this.eventStartTime = this.getStartTime(); //not currently in use
-    this.manualParticipationRate = 0.0/*random(0.15,0.5)*/;
+    this.manualParticipationRate = 0.2/*random(0.15,0.5)*/;
     //communication methods
     this.phone = true;
     this.sms = true;
