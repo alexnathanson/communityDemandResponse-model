@@ -75,7 +75,7 @@ function setup() {
   relay = new Relay(100, 100, scaleIcons)
   relay.centerY((load.center.y+outlet.center.y)*.5)
   relay.centerX(load.center.x);
-  relay.lable = 'switch'
+  relay.label = 'switch'
   relay.showLabelPosition='right'
 
   //from PV to CC
