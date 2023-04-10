@@ -107,3 +107,11 @@ write a complete list of all features and functions (internal or external) to so
 
 
 goal: minimum amount of tech to solve the problem
+
+
+
+
+
+to do:
+add switch
+add side bar

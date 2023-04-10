@@ -1,3 +1,32 @@
+class Model{
+  constructor(){
+    this.mode = 'solar' //options: solar, grid
+    this.speed = 500;
+    this.eventLikely = false;
+    this.tThresh = 85;
+    this.predictMode = true;
+    this.clockOffset = 0;
+    this.eventNow = false;
+    this.loopIt = false;
+
+  }
+
+  tempPrediction(weather){
+    this.eventLikely = false;
+
+    let wT = weather.getColumn('Max_Temp');
+
+    //let avgMaxT = (wT[day-1] + wT[day-2])*.5;
+
+    if (this.predictMode){
+      if (wT[day-1] >this.tThresh || wT[day] > this.tThresh){
+        this.eventLikely = true;
+      }
+    }
+
+  }
+}
+
 class Participant{
   constructor(pX,pY){
     this.batPerc = 1.0;
@@ -23,6 +52,8 @@ class Participant{
     this.email = true;
     this.iot = true;
     this.interfaceIndicator = true;
+
+    //visualization colors
     this.partC = color(0,255,0);
     this.autoC = color(255,150,255);
     this.batC = color(0,255,255);
@@ -32,7 +63,7 @@ class Participant{
 
   }
 
-  updateEnergyDraw(){
+  updateEnergy(){
     //update power draw
     this.batPerc = max(this.batPerc - (this.loadW/this.batWh),0.0);
   }
@@ -41,12 +72,12 @@ class Participant{
     let h= int(clock%24);
 
     let c = false;
-    if(mode == 'grid'){
+    if(this.mode == 'grid'){
       //grid at cheapest time of day
       if(h > 20 || h < 5){
         c= true;
       }
-    } else if (mode == 'solar'){
+    } else if (this.mode == 'solar'){
       //peak sun hours
       if(h > 9 && h < 15){
         c=true;

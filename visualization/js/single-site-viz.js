@@ -67,7 +67,7 @@ function draw(){
   fill(0,0,0,map(min(abs(12-clock%24),6),0,6,50,120));
   rect(0,0,canvasX,canvasY);
 
-
+  console.log(participants[0].batPerc)
   if(participants[0].batPerc == 0){
     loadWireB.state = false
   } else {
@@ -79,6 +79,7 @@ function draw(){
   loadWireB.draw()
 
   pv.draw()
+  bat.setStatus(participants[0].batPerc)
   bat.draw()
 
   outlet.draw();
@@ -291,7 +292,7 @@ class Battery extends Component{
 
       //status
       fill(255,255,0)
-      rect(3,this.h * (1-this.status),this.w-6,this.h * this.status -3)
+      rect(3,(this.h-6) * (1-this.status) + 3,this.w-6,this.h * this.status - 6)
 
       fill(230,230,255)
       //terminal 1
@@ -301,7 +302,18 @@ class Battery extends Component{
       //terminal 2
       let t2X = this.w-t1X
       rect(t2X,0,t1X*-2,-7*this.scale)
+
+      stroke(255);
+      fill(0)
+      textSize(24);
+      textAlign(CENTER,CENTER)
+      text(str(this.status*100) + "%", this.w*.5,this.h*.5);
+
     pop();
+  }
+
+  setStatus(s){
+    this.status = s
   }
 
 }
