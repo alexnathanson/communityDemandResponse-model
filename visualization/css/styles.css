@@ -1,0 +1,33 @@
+form{
+	border-style: solid;
+	padding: 5px;
+	margin: 5px;
+}
+
+#nav{
+	padding: 5px;
+	margin: 5px;
+	background: lightblue;
+	font-weight: bold;
+	font-size: 24;
+}
+
+.slidecontainer{
+  display: inline-block;
+  vertical-align: middle;
+}
+
+#canvas-container{
+	--widthP: 100%;
+	width: var(--widthP) - 20px;
+	height: calc(var(--widthP) * .9);
+	margin: 5px;
+	padding: 5px;
+	border-style: solid;
+}
+
+#p5-canvas{
+	/*width: auto*/
+	height: 100%;
+	width: 100%;
+}

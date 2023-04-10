@@ -42,10 +42,14 @@ function preload() {
   img = loadImage('assets/crownheights-googlemaps.png');
 
   weather = loadTable('data/nyc-weather-aug2022-cleaned.csv', 'csv', 'header');
+
+  let c = window.document.getElementById('p5-canvas')
+  canvasX = c.clientWidth
+  canvasY=c.clientHeight
 }
 
 function setup() {
-  canvasX = windowWidth-20;
+  //canvasX = windowWidth-20;
   canvasY = canvasX* imgRatio;
 
   partC = color(0,255,0);
@@ -56,7 +60,10 @@ function setup() {
   elapsedTimeC = color(255,255,100);
   manuC = color(100,150,255);
 
-  createCanvas(canvasX,canvasY+infoBarY);
+  //createCanvas(canvasX,canvasY+infoBarY);
+  let canvas = createCanvas(canvasX,canvasY+infoBarY);
+  canvas.parent('p5-canvas');
+
   background(255)
   img.resize(canvasX,canvasY)
 

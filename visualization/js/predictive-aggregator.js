@@ -1,10 +1,28 @@
+//get model settings from query string
+const urlParams = new URLSearchParams(location.search);
+let qString = '?';
+for (const [key, value] of urlParams.entries()) {
+  if(qString != '?'){
+    qString = qString + "&";
+  }
+  qString=qString + key + '=' + value
+}
 
-let amtP  = 15;
+//rewrite nav links
+document.getElementById('network').href = document.getElementById('network').href + qString
+document.getElementById('settings').href = document.getElementById('settings').href + qString
+document.getElementById('single').href = document.getElementById('single').href + qString
+
+let amtP  = urlParams.get('participants');
 let participants = [];
 
 let daysInMonth = [31,28,31,30,31,30,31,31,30,31,30,31];
 //run test for August
 let testMonth = 8;
+
+console.log(urlParams.get('rSpeed'));
+let runSpeed = (2000 * (1 - (urlParams.get('rSpeed') * .01)))+10;
+console.log(runSpeed);
 
 let date, clock, day
 let prevHour = -1;
@@ -48,11 +66,10 @@ function predictionSetup(){
   //print(weather.getColumn('Avg_Temp'));
 }
 
-
 function predictionLoop(){
 
   //100ms viz = 1 hour irl
-  clock = millis()/200 - clockOffset;
+  clock = (millis()/runSpeed) - clockOffset;
   //new Date(year,month,day,hours)
   //console.log(1+int(clock/23));
   day = int(clock/24)+1;
@@ -95,24 +112,6 @@ function predictionLoop(){
       }
     }
     eventNow= eF;
-
-    /**** COMMENT OUT FOR WHITE BACKGROUND***/
-    /*if(eventFlag){
-      background(alertC);
-    } else {
-      background(200);
-    }
-
-    image(img, 0,0);
-
-    //day light overlay
-    fill(0,0,0,map(min(abs(12-clock%24),6),0,6,50,120));
-    rect(0,0,canvasX,canvasY);*/
-
-    /*** END COMMENT OUT FOR WHITE BACKGROUND ***/
-
-    /*** COMMENT IN FOR WHITE BACKGROUND ***/
-    //background(255);
 
     //hourly activity
     if(int(clock) != prevHour){

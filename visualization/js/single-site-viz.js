@@ -3,51 +3,94 @@ let imgX = 1713;
 let imgY = 964;
 let imgRatio = imgY/imgX;
 let canvasX, canvasY;
+let sideBarX;
+let posPV, posBatX, posGridX,posCcX, posInvX
 
-let posPV = { x: 50, y: 100};
-let posBatX = 425
-let posGridX = 750
-
-let pvWire,gridWire, loadWire;
+let pvWire,gridWire, loadWire, loadWireB, batWire, invWire, relayWire
 
 let timeC
 
 let weather
 
+let showLabel = true;
+
 function preload() {
-  img = loadImage('assets/crownheights-googlemaps.png');
+  img = loadImage('assets/seinfeld.jpg');
 
   //move this to prediction script
   weather = loadTable('data/nyc-weather-aug2022-cleaned.csv', 'csv', 'header');
-
 }
 
 function setup() {
+  let c = window.document.getElementById('p5-canvas')
+  canvasX = c.clientWidth
+  canvasY= c.clientHeight
+  console.log(c)
+  posPV = { x: canvasX * .3, y: canvasY*.5};
+  posCcX= canvasX * .4;
+  posBatX = canvasX * .5;
+  posInvX = canvasX * .6;
+  posGridX = canvasX * .8;
+  sideBarX = .2 * canvasX;
+
+  let canvas = createCanvas(canvasX, canvasY);
+  canvas.parent('p5-canvas');
+
   predictionSetup()
 
-  canvasX = windowWidth-20;
-  canvasY = windowHeight;
+  //background(255)
+  img.resize(canvasX-sideBarX,canvasY)
 
-  createCanvas(canvasX,canvasY);
-  background(255)
-  img.resize(canvasX,canvasY)
+  let scaleIcons = 1.5;
 
-  pv = new PVModule(posPV.x,posPV.y,2);
+  pv = new PVModule(posPV.x,posPV.y,scaleIcons);
+  pv.centerX(posPV.x);
+  pv.label = 'solar panel'
 
-  outlet = new EdisonOutlet(posGridX,pv.center.y, 2);
+  outlet = new EdisonOutlet(posGridX,pv.center.y, scaleIcons);
+  outlet.centerX(posGridX)
   outlet.centerY(pv.center.y)
+  outlet.label = 'grid connected outlet'
 
-  bat = new Battery(posBatX,pv.center.y, 2);
+  cc = new ChargeController(posCcX,pv.center.y, scaleIcons);
+  cc.centerX(posCcX)
+  cc.centerY(pv.center.y)
+  cc.label = 'charge controller'
+
+  bat = new Battery(posBatX,pv.center.y, scaleIcons);
+  bat.centerX(posBatX)
   bat.centerY(pv.center.y)
+  bat.label = 'battery'
 
-  load = new Load(100,100, 2);
-  load.centerX((bat.center.x + outlet.center.x) * .5)
+  inv = new Inverter(posInvX,pv.center.y, scaleIcons);
+  inv.centerX(posInvX)
+  inv.centerY(pv.center.y)
+  inv.label='inverter'
 
-  pvWire = new Wire(pv.center.x,pv.center.y,bat.center.x,bat.center.y,-1);
-  gridWire = new Wire(outlet.center.x,outlet.center.y,bat.center.x,bat.center.y,1);
-  loadWire = new Wire(outlet.center.x,outlet.center.y,load.center.x,load.center.y,1);
-  loadWireB = new Wire(bat.center.x,bat.center.y,load.center.x,load.center.y,-1);
-  //loadWire.animate = 2
+  load = new Load(100,100, scaleIcons);
+  load.centerX((inv.center.x + outlet.center.x) * .5);
+  load.label = 'electrical load'
+  load.showLabelPosition = 'right';
+
+  relay = new Relay(100, 100, scaleIcons)
+  relay.centerY((load.center.y+outlet.center.y)*.5)
+  relay.centerX(load.center.x);
+  relay.lable = 'switch'
+  relay.showLabelPosition='right'
+
+  //from PV to CC
+  pvWire = new Wire(pv.center.x,pv.center.y,cc.center.x,cc.center.y,-1);
+  //from CC to Bat
+  batWire = new Wire(cc.center.x,cc.center.y,bat.center.x,bat.center.y,-1);
+  //from Bat to Inv
+  invWire = new Wire(bat.center.x,bat.center.y,inv.center.x,inv.center.y,-1)
+  //grid to relay
+  loadWire = new Wire(outlet.center.x,outlet.center.y,relay.center.x,relay.center.y,1);
+  //inv to load
+  loadWireB = new Wire(inv.center.x,inv.center.y,relay.center.x,relay.center.y,-1);
+  loadWire.animate = 2
+
+  relayWire = new Wire(relay.center.x,relay.center.y,load.center.x,load.center.y,1)
 
   timeC = color(150,150,255);
 
@@ -61,28 +104,37 @@ function draw(){
 
   //background(200)
 
-  image(img, 0,0);
+  image(img, sideBarX,0);
 
   //day light overlay
-  fill(0,0,0,map(min(abs(12-clock%24),6),0,6,50,120));
-  rect(0,0,canvasX,canvasY);
+  //fill(0,0,0,map(min(abs(12-clock%24),6),0,6,50,120));
+  fill(255,255,255,100);
+  rect(sideBarX,0,canvasX,canvasY);
 
+  //sidebar
+  fill(150,100,200);
+  rect(0,0,sideBarX,canvasY);
 
-  if(participants[0].batPerc == 0){
+  /*if(participants[0].batPerc == 0){
     loadWireB.state = false
   } else {
     loadWireB.state = true
-  }
+  }*/
+
   pvWire.draw()
-  gridWire.draw()
+  batWire.draw()
+  invWire.draw()
+  //gridWire.draw()
   loadWire.draw()
   loadWireB.draw()
+  relayWire.draw()
 
   pv.draw()
   bat.draw()
-
+  cc.draw();
   outlet.draw();
-
+  inv.draw();
+  relay.draw();
   load.draw();
 
   drawClock(canvasX-50,canvasY-50)
@@ -211,6 +263,9 @@ class Component{
     this.h = 100 * this.scale;
     this.center = this.setCenter();
     this.color = color(int(random(255)),int(random(255)),int(random(255)), 255);
+    this.label = 'component'
+    this.showLabel = true;
+    this.showLabelPosition = 'bottom';//possible values are botton, top, left,right
   }
 
   centerX(x){
@@ -227,6 +282,37 @@ class Component{
     return { x: this.x + (this.w * .5), y: this.y + (this.h * .5)};
   }
 
+  get centerT(){
+    return this.center;
+  }
+
+  drawLabel(){
+    push()
+
+      if(this.showLabel){
+        noStroke();
+        textSize(16)
+        textAlign(CENTER,TOP)
+        textStyle(BOLD)
+        fill(0)
+        if(this.showLabelPosition=='bottom'){
+          textAlign(CENTER,TOP)
+          text(this.label, this.w*.5,this.h+10)
+        } else if(this.showLabelPosition=='top'){
+          textAlign(CENTER,BOTTOM)
+          text(this.label, this.w*.5,10)
+        }  else if(this.showLabelPosition=='left'){
+          textAlign(RIGHT,CENTER)
+          text(this.label, -10,this.h*.5)
+        }  else if(this.showLabelPosition=='right'){
+          textAlign(LEFT,CENTER)
+          text(this.label, this.w+10,this.h*.5)
+        } 
+      }
+    pop();
+  }
+  
+
 }
 
 class PVModule extends Component{
@@ -240,7 +326,7 @@ class PVModule extends Component{
     this.pD = (this.w-(this.pMarginX*(this.pvAmtX+1))) / this.pvAmtX
     this.pvAmtY = int(this.h/this.pD);
     this.pMarginY = (this.h - (this.pD*this.pvAmtY))/(this.pvAmtY+1);
-    this.center = this.setCenter();
+    //this.center = this.setCenter();
     this.backSheetColor = color(255);
   }
 
@@ -267,8 +353,126 @@ class PVModule extends Component{
         }
       }
 
+      this.drawLabel();
+
     pop();
   }
+}
+
+class ChargeController extends Component{
+  constructor(x,y,s){
+    super(x,y,s);
+    this.w = 50 * this.scale;
+    this.h = 75 * this.scale;
+    //this.center =  { x: this.x + (this.w * .5), y: this.y + (this.h * .5)};
+    //this.center = this.setCenter();
+    this.color = color(200)
+  }
+
+  draw(){
+
+    push();
+      translate(this.x,this.y)
+      fill(this.color);
+      rect(0,0,this.w,this.h);
+
+      fill(50);
+      rect(10,10,this.w-20,this.h*.25);
+
+      for(let i=1;i<=6;i++){
+        circle(i*(this.w/7),this.h-10,5)
+      }
+
+      this.drawLabel();
+
+    pop();
+  }
+
+}
+
+class Relay extends Component{
+  constructor(x,y,s){
+    super(x,y,s);
+    this.w = 20 * this.scale;
+    this.h = 30 * this.scale;
+    //this.center =  { x: this.x + (this.w * .5), y: this.y + (this.h * .5)};
+    //this.center = this.setCenter();
+    this.color = color(50,200,50)
+    this.state = true
+  }
+
+  draw(){
+
+    push();
+      translate(this.x,this.y)
+      if(this.state){
+        fill(this.color);
+      } else {
+        fill(200,50,50);
+      }
+      rect(0,0,this.w,this.h);
+
+      if(this.state){
+        textAlign(CENTER,BOTTOM);
+        stroke(0);
+        fill(200,200,200)
+        rect(2,5,this.w-4,(this.h-10)*.5,2);
+        stroke(0)
+        text("I", this.w*.5, 5+(this.h*.5 -5))
+
+      } else {
+              textAlign(CENTER,TOP);
+
+        stroke(0);
+        fill(200,200,200)
+        rect(2,this.h*.5,this.w-4,(this.h-10)*.5,2);
+        stroke(0)
+        text("O", this.w*.5, 5+(this.h*.5 -5))
+      }
+      this.drawLabel();
+      
+    pop();
+  }
+
+}
+
+class Inverter extends Component{
+  constructor(x,y,s){
+    super(x,y,s);
+    this.w = 75 * this.scale;
+    this.h = 30 * this.scale;
+    //this.center =  { x: this.x + (this.w * .5), y: this.y + (this.h * .5)};
+    this.center = this.setCenter();
+    this.color = color(100,255,100)
+  }
+
+  draw(){
+
+    push();
+      translate(this.x,this.y)
+      fill(this.color);
+      rect(0,0,this.w,this.h);
+
+      fill(255,100,100)
+      let tY =5*this.scale
+      //terminal 1
+      let t1Y = 2 * this.scale
+      rect(-10,t1Y,10,tY)
+
+      //terminal 2
+      fill(120)
+      let t2Y = this.h-t1Y-tY
+      rect(-10,t2Y,10,tY)
+
+      stroke(0)
+      noFill();
+      textAlign(CENTER,CENTER)
+      text('DC/AC',this.w*.5,this.h*.5)
+      this.drawLabel();
+
+    pop();
+  }
+
 }
 
 class Battery extends Component{
@@ -277,7 +481,7 @@ class Battery extends Component{
     this.w = 75 * this.scale;
     this.h = 50 * this.scale;
     //this.center =  { x: this.x + (this.w * .5), y: this.y + (this.h * .5)};
-    this.center = this.setCenter();
+    //this.center = this.setCenter();
     this.status = 0.75
     this.color = color(200)
   }
@@ -301,6 +505,7 @@ class Battery extends Component{
       //terminal 2
       let t2X = this.w-t1X
       rect(t2X,0,t1X*-2,-7*this.scale)
+      this.drawLabel();
     pop();
   }
 
@@ -315,7 +520,7 @@ class Load extends Component{
     this.center = { x: this.x + (this.w * .5), y: this.y + (this.h * .5)};*/
     this.w = 25 * this.scale;
     this.h = 40 * this.scale;
-    this.center = this.setCenter();
+    //this.center = this.setCenter();
     this.on = true;
     this.color = this.setColor();
 
@@ -329,11 +534,11 @@ class Load extends Component{
 
       translate(this.x,this.y)
 
-      strokeWeight(10)
+      strokeWeight(5*this.scale)
       stroke(200,200,255)
-      line(10,13,this.w-10,10)
-      line(11,24,this.w-11,21)
-      line(14,35,this.w-14,32)
+      line(5*this.scale,6.5*this.scale,this.w-(5*this.scale),5*this.scale)
+      line(5.5*this.scale,12*this.scale,this.w-(5.5*this.scale),10.5*this.scale)
+      line(7*this.scale,17.5*this.scale,this.w-(7*this.scale),16*this.scale)
 
       fill(this.color);
       noStroke();
@@ -344,6 +549,7 @@ class Load extends Component{
       rect(0,0,this.w,this.h*.09,5);
 
 
+      this.drawLabel();
 
     pop();
   }
@@ -364,7 +570,7 @@ class EdisonOutlet extends Component{
     this.w = 30 * this.scale;
     this.h = 50 * this.scale;
     //this.center = { x: this.x + (this.w * .5), y: this.y + (this.h * .5)};
-    this.center = this.setCenter();
+    //this.center = this.setCenter();
     this.color = color (200,255,200)
   }
 
@@ -393,6 +599,7 @@ class EdisonOutlet extends Component{
       noFill();
       strokeJoin(ROUND)
       rect(this.w*.5,this.h*.5 -(this.h* .05),this.w*.7,p4.y, 15)
+      this.drawLabel();
     pop()
   }
   

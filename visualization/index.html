@@ -1,11 +1,98 @@
 <html>
   <head>
+    <link rel="stylesheet" href="css/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.js"></script>
-    <script src="js/aggregator-viz.js"></script>
   </head>
   <body>
-    <a href="single-site.html" >1 Site</a> | <a href="prediction.html">Network</a>
+
+    <div id="nav">
+      <a href="index.html">Model Settings</a><!--  |  <a href="single-site.html" >Single Site View</a> | <a href="network.html">Network View</a> -->
+    </div>
+
     <main>
+
+      <form id="modelSettings">
+        <div class="formcontainer">
+          <h3>Participant Characteristics:</h3>
+          <div class="slideparent">
+            <label for="participants" class="slider-label">Amount of Participants</label>
+            <div class="slidecontainer">
+              <input type="range" min="1" max="200" value="100" class="slider" id="participants" name="participants" onchange="updateSliderParticipants()">
+            </div>
+
+            <span id='participantAmt'></span>
+            (Minimum average <span id='avgRes'></span> Watt reservation.)
+          </div>
+
+          <h4>Con Ed DR Programs</h4>
+          <input type="checkbox" id="CRSP" name="CRSP" value="true" checked>
+          <label for="CRSP">CRSP</label><br>
+          <input type="checkbox" id="DLRP" name="DLRP" value="true" checked>
+          <label for="DLRP">DLRP</label><br>
+
+          <h4>Available System Components</h4>
+          <p>
+            <input type="radio" id="uniform" name="uniform" value="uniform">
+            <label for="uniform">All Participants Uniform Characteristics</label><br>
+            <input type="radio" id="random" name="uniform" value="randomize">
+            <label for="random">Randomize Participant Characteristics</label><br>
+          </p>
+
+          <input type="checkbox" id="PV" name="PV" value="PV" checked>
+          <label for="PV">solar panel</label><br>
+          <input type="checkbox" id="battery" name="battery" value="battery" checked>
+          <label for="battery">battery</label><br>
+          <input type="checkbox" id="relay" name="relay" value="relay" checked>
+          <label for="relay">smart relay</label>
+
+     <!--      <h4>Communication and Control Methods</h4>
+          <input type="checkbox" id="email" name="email" value="email" checked>
+          <label for="email">Email</label><br>
+          <input type="checkbox" id="phone" name="phone" value="phone" checked>
+          <label for="phone">Phone</label><br>
+          <input type="checkbox" id="sms" name="sms" value="sms" checked>
+          <label for="sms">SMS</label> -->
+
+          <h3>Model Settings</h3>
+          <!-- <div class="slidecontainer">
+            <input type="range" min="1" max="30" value="30" class="slider" id="days" onchange="updateSlider(this.id,this.value,'dayAmt')">
+          </div>   -->
+          <h4>Time Period</h4>
+          <input type="radio" id="fullseason" name="timeperiod" value="fullseason">
+          <label for="fullseason">Full Season (May 1 - Sept 31)</label><br>
+          <input type="radio" id="month" name="timeperiod" value="august" checked>
+          <label for="month">August</label><br>
+          <input type="radio" id="week" name="timeperiod" value="week">
+          <label for="week">1 Week</label><br>
+          <input type="radio" id="day" name="timeperiod" value="day">
+          <label for="day">1 Day</label><br>
+
+          <div class="slideparent">
+            <label for="rSpeed" class="slider-label">Speed: </label>
+            <div class="slidecontainer">
+              <input type="range" min="1" max="100" value="50" class="slider" id="rSpeed" name="rSpeed" onchange="updateSliderSpeed(this.id)">
+            </div>
+
+            <span id='rSpeedAmt'></span><br>
+            1 hour = <span id='millis'></span> seconds
+
+          </div>
+
+          <h4>Optimization</h4>
+          <input type="radio" id="optimize-energy" name="pc" value="optimize">
+          <label for="optimize-energy">Optimize Participants for Energy Efficiency</label><br>
+          <input type="radio" id="optimize-income" name="pc" value="optimize-income">
+          <label for="optimize">Optimize Participants for Maximizing Income</label><br>
+          <p>
+            <button type="submit" name="network"  formaction="network.html">Run Network</button>
+            <button type="submit" name="individual" formaction="single-site.html">Run Individual</button>
+
+          </p>
+      </form> 
+
     </main>
+
+    <script src="js/formhandler.js"></script>
+
   </body>
 </html>
