@@ -21,6 +21,8 @@ form{
 	--widthP: 100%;
 	width: var(--widthP) - 20px;
 	height: calc(var(--widthP) * .9);
+	/*width: 1000px;
+	height: 562px;*/
 	margin: 5px;
 	padding: 5px;
 	border-style: solid;

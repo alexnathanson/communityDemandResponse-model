@@ -10,7 +10,7 @@ class Participant{
     this.location = [pX,pY];
     this.loadW = 500;
     this.batWh = int(random(500,2000));
-    this.psh = [5.94,5.87,6.39,5.51,5.08]; //peak sun hours in May-September @ 20 degree tilt in central Brooklyn
+    this.psh = [5.94,5.87,6.39,5.51,5.08]; //average peak sun hours in May-September @ 20 degree tilt in central Brooklyn
     this.chargeW = int(this.batWh /Math.min(this.psh)); //full charge within min available psh
     this.solarAccess = 1.0; //percentage of PSH unobstructed
     this.participationHistory = [];

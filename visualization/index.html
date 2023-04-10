@@ -30,12 +30,23 @@
           <input type="checkbox" id="DLRP" name="DLRP" value="true" checked>
           <label for="DLRP">DLRP</label><br>
 
+          <h4>Tiers</h4>
+
+          <p>
+            <input type="radio" id="tier1" name="tier" value="tier1" checked>
+            <label for="uniform">Tier 1</label><br>
+            <input type="radio" id="tier2" name="tier" value="tier2" checked>
+            <label for="tier2">Tier 2</label><br>
+            <input type="radio" id="randTier" name="tier" value="randomize">
+            <label for="random">Randomize participant tiers</label><br>
+          </p>
+
           <h4>Available System Components</h4>
           <p>
-            <input type="radio" id="uniform" name="uniform" value="uniform">
-            <label for="uniform">All Participants Uniform Characteristics</label><br>
+            <input type="radio" id="uniform" name="uniform" value="uniform" checked>
+            <label for="uniform">All participants have uniform characteristics, except for location</label><br>
             <input type="radio" id="random" name="uniform" value="randomize">
-            <label for="random">Randomize Participant Characteristics</label><br>
+            <label for="random">Randomize participant characteristics within assumed ranges</label><br>
           </p>
 
           <input type="checkbox" id="PV" name="PV" value="PV" checked>
@@ -70,7 +81,7 @@
           <div class="slideparent">
             <label for="rSpeed" class="slider-label">Speed: </label>
             <div class="slidecontainer">
-              <input type="range" min="1" max="100" value="50" class="slider" id="rSpeed" name="rSpeed" onchange="updateSliderSpeed(this.id)">
+              <input type="range" min="1" max="100" value="75" class="slider" id="rSpeed" name="rSpeed" onchange="updateSliderSpeed(this.id)">
             </div>
 
             <span id='rSpeedAmt'></span><br>
@@ -81,7 +92,7 @@
           <h4>Optimization</h4>
           <input type="radio" id="optimize-energy" name="pc" value="optimize">
           <label for="optimize-energy">Optimize Participants for Energy Efficiency</label><br>
-          <input type="radio" id="optimize-income" name="pc" value="optimize-income">
+          <input type="radio" id="optimize-income" name="pc" value="optimize-income" checked>
           <label for="optimize">Optimize Participants for Maximizing Income</label><br>
           <p>
             <button type="submit" name="network"  formaction="network.html">Run Network</button>
