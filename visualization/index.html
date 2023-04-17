@@ -13,33 +13,51 @@
 
       <form id="modelSettings">
         <div class="formcontainer">
-          <h3>Participant Characteristics:</h3>
+          <h3>Aggregtion Characteristics:</h3>
           <div class="slideparent">
             <label for="participants" class="slider-label">Amount of Participants</label>
             <div class="slidecontainer">
-              <input type="range" min="1" max="200" value="100" class="slider" id="participants" name="participants" onchange="updateSliderParticipants()">
+              <input type="range" min="1" max="2000" value="100" class="slider" id="participants" name="participants" onchange="updateSliderParticipants()"> 
             </div>
-
-            <span id='participantAmt'></span>
-            (Minimum average <span id='avgRes'></span> Watt reservation.)
+            <span class="tooltip"><span id='participantAmt'></span> households<span class="tooltiptext">A participant can be any Con Ed customer with a dedicated smart meter.</span></span>
           </div>
+
+          <div class="slideparent">
+            <label for="reservation" class="slider-label">Total Reservation Wattage</label>
+            <div class="slidecontainer">
+              <input type="range" min="50" max="1000" value="50" class="slider" id="reservation" name="reservation" onchange="updateSliderReservation()">
+            </div>   
+            <span class="tooltip"><span id='reservationAmt'></span> kW<span class="tooltiptext">50kW is the minimum reservation size for an agregation of participants.</span></span>
+          </div>
+            Average Watt reservation per participant: <span id='avgRes'></span> kW
+
+          <h3>Participant Characteristics:</h3>
 
           <h4>Con Ed DR Programs</h4>
           <input type="checkbox" id="CRSP" name="CRSP" value="true" checked>
-          <label for="CRSP">CRSP</label><br>
+          <label for="CRSP" class="tooltip">CRSP<span class="tooltiptext">Commercial System Relief Program events are typically system wide calls scheduled with 21 hours advance notice. The goal of CSRP is peak shaving.</span></label><br>
           <input type="checkbox" id="DLRP" name="DLRP" value="true" checked>
-          <label for="DLRP">DLRP</label><br>
+          <label for="DLRP" class="tooltip">DLRP<span class="tooltiptext">Distribution Load Relief Program events are not typically system wide and are determined based on an individual network's needs. DLRP notifies participants 2 hours or less in advance to address immediate grid reliability issues.</label></label><br>
 
-          <h4>Tiers</h4>
+          <h4>Network</h4>
+          The Con Ed system covers all 5 NYC boroughs and Westchester. It is composed of <a href='https://cdnc-dcxprod2-sitecore.azureedge.net/-/media/files/coned/documents/save-energy-money/rebates-incentives-tax-credits/smart-usage-rewards/networks-and-tiers.pdf' target="_blank" class="tooltip">83 networks<span class="tooltiptext">Detailed network info can be found here.</span></a>. In some cases, payments vary based on network and borough.<br>
+          
+          <p>
+            <select name="networks" id="networks" onchange="updateNetwork()"></select>
+          </p>
+
+          <div id="networkInfo"></div>
+
+          <!-- <h4>Tiers</h4>
 
           <p>
             <input type="radio" id="tier1" name="tier" value="tier1" checked>
-            <label for="uniform">Tier 1</label><br>
+            <label for="tier 1"class="tooltip">Tier 1<span class="tooltiptext">Tier 1 Networks cover 71 of 81 networks in the system. (All networks not listed below in T2 tooltip are T1.)</span></label><br>
             <input type="radio" id="tier2" name="tier" value="tier2" checked>
-            <label for="tier2">Tier 2</label><br>
+            <label for="tier2" class="tooltip">Tier 2<span class="tooltiptext">Tier 2 Networks are considered higher priority and pay $25/kW-month DLRP reservation rate. These networks are Borough Hall, Central Bronx, Fordham, Northeast Bronx, Ocean Parkway, Ridgewood, Southeast Bronx, West Bronx, Williamsburg, Jackson Heights</span></label><br>
             <input type="radio" id="randTier" name="tier" value="randomize">
             <label for="random">Randomize participant tiers</label><br>
-          </p>
+          </p> -->
 
           <h4>Available System Components</h4>
           <p>
@@ -70,13 +88,15 @@
           </div>   -->
           <h4>Time Period</h4>
           <input type="radio" id="fullseason" name="timeperiod" value="fullseason">
-          <label for="fullseason">Full Season (May 1 - Sept 31)</label><br>
+          <label for="fullseason">Full 2022 Season (May 1 - Sept 31)</label><br>
           <input type="radio" id="month" name="timeperiod" value="august" checked>
-          <label for="month">August</label><br>
+          <label for="month">All of August 2022</label><br>
           <input type="radio" id="week" name="timeperiod" value="week">
-          <label for="week">1 Week</label><br>
+          <label for="week">1st Week of July 2022 (0 events)</label><br>
+          <input type="radio" id="week" name="timeperiod" value="week">
+          <label for="week">1st Week of August 2022 (2 events)</label><br>
           <input type="radio" id="day" name="timeperiod" value="day">
-          <label for="day">1 Day</label><br>
+          <label for="day">1 Day (no event)</label><br>
 
           <div class="slideparent">
             <label for="rSpeed" class="slider-label">Speed: </label>

@@ -90,20 +90,20 @@ function setup() {
   relay.showLabelPosition='right'
 
   //from PV to CC
-  pvWire = new Wire(pv.center.x,pv.center.y,cc.center.x,cc.center.y,-1,scaleIcons);
+  pvWire = new MultiWire([{x:pv.center.x,y:pv.center.y},{x:cc.center.x,y:cc.center.y}],scaleIcons);
   //from CC to Bat
-  batWire = new Wire(cc.center.x,cc.center.y,bat.center.x,bat.center.y,-1,scaleIcons);
+  batWire = new MultiWire([{x:cc.center.x,y:cc.center.y},{x:bat.center.x,y:bat.center.y}],scaleIcons);
   //from Bat to Inv
-  invWire = new Wire(bat.center.x,bat.center.y,inv.center.x,inv.center.y,-1,scaleIcons)
+  invWire = new MultiWire([{x:bat.center.x,y:bat.center.y},{x:inv.center.x,y:inv.center.y}],scaleIcons)
   //grid to relay
-  loadWire = new Wire(outlet.center.x,outlet.center.y,relay.center.x,relay.center.y,1,scaleIcons);
+  loadWire = new MultiWire([{x:outlet.center.x,y:outlet.center.y},{x:relay.center.x,y:relay.center.y}],scaleIcons);
   //inv to load
-  loadWireB = new Wire(inv.center.x,inv.center.y,relay.center.x,relay.center.y,-1, scaleIcons);
+  loadWireB = new MultiWire([{x:inv.center.x,y:inv.center.y},{x:relay.center.x,y:relay.center.y}], scaleIcons);
   loadWire.animate = 2
-  relayWire = new Wire(relay.center.x,relay.center.y,load.center.x,load.center.y,1,scaleIcons)
+  relayWire = new MultiWire([{x:relay.center.x,y:relay.center.y},{x:load.center.x,y:load.center.y}],scaleIcons)
 
 
-  gridWire = new MultiWire({x:outlet.center.x,y:outlet.center.y},{x:cc.center.x,y:cc.center.y},[{x:outlet.center.x,y:outlet.center.y+100},{x:cc.center.x,y:cc.center.y+100}],1,scaleIcons)
+  gridWire = new MultiWire([{x:outlet.center.x,y:outlet.center.y},{x:outlet.center.x,y:outlet.center.y+100},{x:cc.center.x,y:cc.center.y+100},{x:cc.center.x,y:cc.center.y}],scaleIcons)
   console.log(gridWire.allPoints)
 
   timeC = color(150,150,255);
@@ -724,7 +724,7 @@ class Wire{
   }
 
   getRotation(){
-    let a = this.height/this.distance
+    let a = Math.sin(this.height/this.distance)
 
     if (this.width < 0){
       a = a * -1;
@@ -735,12 +735,13 @@ class Wire{
 }
 
 class MultiWire extends Wire{
-  constructor(s,e, mArray, dir,scale){
-    super(s.x,s.y,e.x,e.y, dir,scale)
-    this.start = { x: s.x, y: s.y}; //start point
-    this.end = { x: e.x, y: e.y}; //end point
-    this.midPoints = mArray;//all mid points
-    this.allPoints = [this.start].concat(this.midPoints,[this.end]);
+  constructor(mArray, scale){
+    super(mArray[0].x,mArray[0].y,mArray[mArray.length - 1].x,mArray[mArray.length - 1].y, 1,scale)
+    /*this.start = {x : mArray[0].x, y: mArray[0].y}; //start point
+    this.end = {x : mArray[mArray.length - 1].x, y: mArray[mArray.length - 1].y}; //end point*/
+    //this.midPoints = mArray;//all mid points
+    //this.allPoints = [this.start].concat(this.midPoints,[this.end]);
+    this.allPoints = mArray;
   }
 
   draw(){
@@ -772,37 +773,38 @@ class MultiWire extends Wire{
         stroke(255);
         line(this.allPoints[mm].x,this.allPoints[mm].y,this.allPoints[mm+1].x,this.allPoints[mm+1].y);
 
+        //wire
         strokeWeight(this.wireThickness);
         stroke(this.wireColor);
         line(this.allPoints[mm].x,this.allPoints[mm].y,this.allPoints[mm+1].x,this.allPoints[mm+1].y);
 
-        strokeWeight(this.wireThickness*.1)
-        stroke(255,0,0)
-        fill(255,255,0)
-      
-      
-        let arrowDist = 15
-        let amtArrows = sectionDist/arrowDist
+        //arrows
 
         if(this.state){
-          for (let a = 0; a < sectionDist/arrowDist;a++){
-            let pointX=this.allPoints[mm].x + xDir * ((sectionDist/amtArrows)*a);
-            let pointY=this.allPoints[mm].y + yDir * ((sectionHeight/amtArrows)*a);
-            //let pointY=this.allPoints[mm].y + ((this.allPoints[mm+1].y - this.allPoints[mm].y)/arrowDist)*a;
+          strokeWeight(this.wireThickness*.1)
+          stroke(255,0,0)
+          fill(255,255,0)
+        
+          let arrowDist = 20
+          let amtArrows = sectionDist/arrowDist
 
+          for (let a = 0; a < sectionDist/arrowDist;a++){
+            let pointX, pointY;
 
             if(int(clock/2) % 2 == 0 ){
-              pointX=this.allPoints[mm].x + (xDir * ((sectionDist/amtArrows)*(a+.5)));
+              pointX=this.allPoints[mm].x + (xDir * ((sectionLength/amtArrows)*(a+.5)));
               pointY=this.allPoints[mm].y + (yDir * ((sectionHeight/amtArrows)*(a+.5)));
-              /*pointX = pointX + ((this.startX - this.endX) *.05);
-              pointY = pointY + ((this.startY - this.endY) *.05);*/
+            } else {
+              pointX=this.allPoints[mm].x + xDir * ((sectionLength/amtArrows)*a);
+              pointY=this.allPoints[mm].y + yDir * ((sectionHeight/amtArrows)*a);
             }
             
             push()
               translate(pointX, pointY)
+              //angleMode(RADIANS);
               rotate(this.getRotation(this.allPoints[mm],this.allPoints[mm+1]))
               //triangle(pointX, pointY, pointX+(tD* this.direction), pointY+tD,pointX+(tD* this.direction), pointY-tD)
-              triangle(0,0, (tD* this.direction), tD,(tD* this.direction), -tD)
+              triangle(0,0, tD, tD,tD, -tD)
             pop()
           }
         }
@@ -812,13 +814,32 @@ class MultiWire extends Wire{
   }
 
   getRotation(s,e){
+
     let sD = dist(s.x,s.y,e.x,e.y)
+    let r = Math.sin((s.y-e.y)/sD)
 
-    let a = abs(s.y-e.y)/sD
+    //if horizontal
+    if (s.y == e.y & s.x < e.x){
+      r = PI;
+    } else if (s.x == e.x & s.y < e.y){ //if vertical
+      r = r - QUARTER_PI;
+    } else if (s.x == e.x & s.y > e.y){ //if vertical
+      r = r + QUARTER_PI;
+    } else if (s.x < e.x){ //if vertical
+      r = PI - r;
+    } 
 
-    if (abs(s.x-e.x) < 0){
-      a = a * -1;
-    }
-    return a;
+    /*else {
+      let sD = dist(s.x,s.y,e.x,e.y)
+
+      let a = abs(s.y-e.y)/sD
+
+      if (abs(s.x-e.x) < 0){
+        r = a * -1;
+      }
+    }*/
+    
+    //console.log(r);
+    return r;
   }
 }
