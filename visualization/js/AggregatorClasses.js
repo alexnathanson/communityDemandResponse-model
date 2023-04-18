@@ -234,3 +234,86 @@ class Event{
     return color(r,g,0);
   }
 }
+
+class ModelData{
+  constructor(){
+    this.networkList = 'data/conEdNetworks2022-cleaned.csv'
+    this.parsedNetworkedList = this.readCSVFile(this.networkList,this.parseNetworkFile)
+      .then((data) => {
+        return data
+      })
+      .catch((error) => {
+        console.error(`Error while reading CSV file: ${error.message}`); // Log the error message
+      });
+    this.activityLog = 'data/DR-activitylog-cleaned.csv'
+    /*this.parsedActivityLog = this.readCSVFile(this.activityLog,this.parseActivityFile)
+      .then((data) => {
+        return data
+      })
+      .catch((error) => {
+        console.error(`Error while reading CSV file: ${error.message}`); // Log the error message
+      });*/
+  }
+
+  readCSVFile(file, callback) {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', file, true);
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+            resolve(callback(xhr.responseText));
+          } else {
+            reject(new Error(`Failed to load CSV file. Status: ${xhr.status}`));
+          }
+        }
+      };
+      xhr.onerror = (error) => {
+        reject(error);
+      };
+      xhr.send();
+    });
+  }
+
+  //not tested
+/*  parseActivityFile(response){
+    const result = [];
+
+    const csvData = response;
+    const lines = csvData.split('\n');
+    const result = [];
+    let headers = lines[0].split(',');
+    for (let j = 0; j < lines[0].split(',').length; j++) {
+      headers[j]= headers[j].replace('\r','');
+    }
+    for (let i = 1; i < lines.length; i++) {
+      const obj = {};
+      const currentLine = lines[i].split(',');
+      for (let j = 0; j < headers.length; j++) {
+        obj[headers[j]] = currentLine[j].replace('\r','');
+      }
+      result.push(obj);
+    }
+    return result
+  }*/
+
+  parseNetworkFile(response){
+    const csvData = response;
+    const lines = csvData.split('\n');
+    const result = [];
+    let headers = lines[0].split(',');
+    for (let j = 0; j < lines[0].split(',').length; j++) {
+      headers[j]= headers[j].replace('\r','');
+    }
+    for (let i = 1; i < lines.length; i++) {
+      const obj = {};
+      const currentLine = lines[i].split(',');
+      for (let j = 0; j < headers.length; j++) {
+        obj[headers[j]] = currentLine[j].replace('\r','');
+      }
+      result.push(obj);
+    }
+    return result
+  }
+
+}

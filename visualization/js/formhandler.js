@@ -1,5 +1,7 @@
-const networkList = 'data/conEdNetworks2022-cleaned.csv'
-let parsedNetworkedList
+/*const networkList = 'data/conEdNetworks2022-cleaned.csv'
+let parsedNetworkedList*/
+let data = new ModelData();
+populateNetworkList(data.parsedNetworkedList)
 
 updateSliderParticipants();
 updateSliderReservation();
@@ -11,6 +13,11 @@ function updateSliderParticipants(){
 	document.getElementById('participantAmt').innerHTML = value;
 
 	updateAvgReservation();
+
+	try{
+			updateNetwork()
+	} catch(error){
+	}
 }
 
 function updateSliderReservation(){
@@ -19,6 +26,11 @@ function updateSliderReservation(){
 	document.getElementById('reservationAmt').innerHTML = value;
 
 	updateAvgReservation();
+
+	try{
+			updateNetwork()
+	} catch(error){
+	}
 }
 
 function updateAvgReservation(){
@@ -37,6 +49,7 @@ function updateSliderSpeed(id){
 	let s = ((2000 * (100-value) * .01)+10)/1000;
 
 	document.getElementById('millis').innerHTML = s;
+
 }
 
 function populateNetworkList(networkArray){
@@ -48,6 +61,8 @@ function populateNetworkList(networkArray){
 		  newItem.value = networkArray[n].network; // Set the value of the new option element
 		  dropdownMenu.add(newItem); // Add the new option element to the dropdown menu
 	}
+
+	updateNetwork()
 }
 
 function updateNetwork(){
@@ -112,7 +127,7 @@ const form = document.getElementById("modelSettings");
 
 form.addEventListener("submit", onSubmit);*/
 
-function readCSVFile(file) {
+/*function readCSVFile(file) {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', file, true);
@@ -156,3 +171,4 @@ readCSVFile(networkList)
   .catch((error) => {
     console.error(`Error while reading CSV file: ${error.message}`); // Log the error message
   });
+*/

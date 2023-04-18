@@ -17,6 +17,10 @@ form{
   vertical-align: middle;
 }
 
+input[type=range]{
+	min-width: 200px;
+}
+
 #canvas-container{
 	--widthP: 100%;
 	width: var(--widthP) - 20px;
