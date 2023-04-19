@@ -1,12 +1,17 @@
 //get model settings from query string
 const urlParams = new URLSearchParams(location.search);
+//let testSettings = {};
+
 let qString = '?';
 for (const [key, value] of urlParams.entries()) {
   if(qString != '?'){
     qString = qString + "&";
   }
+  //testSettings[key]=value;
   qString=qString + key + '=' + value
 }
+
+//console.log(testSettings)
 
 //rewrite nav links
 document.getElementById('network').href = document.getElementById('network').href + qString
@@ -16,12 +21,17 @@ document.getElementById('single').href = document.getElementById('single').href 
 let amtP  = urlParams.get('participants');
 let participants = [];
 
-let daysInMonth = [31,28,31,30,31,30,31,31,30,31,30,31];
-//run test for August
+//let daysInMonth = [31,28,31,30,31,30,31,31,30,31,30,31];
+
+//default run test for August
 let testMonth = 8;
 
-console.log(urlParams.get('rSpeed'));
-let runSpeed = (2000 * (1 - (urlParams.get('rSpeed') * .01)))+10;
+if (urlParams.get('timeperiod') == 'august'){
+  testMonth = 8;
+}
+
+let speedSetting = document.getElementById('rSpeedAmt').value;
+let runSpeed = (2000 * (1 - (speedSetting * .01)))+10;
 console.log(runSpeed);
 
 let date, clock, day
@@ -31,22 +41,22 @@ let events = [];
 let event21=[4,5]; //days events occur with 21 hr advanced notice
 let event2=[8,9]; //days events occur with 2 hr advanced notice
 
-let eventNow = false;
+//let eventNow = false;
 
 //low T, high T,sky (100 = clear, 0 = rain)
 let augTemp22 = [[72,75,.7],[73,88,1.0],[79,86,1.0],[77,90,1.0],[81,90,.75],[79,86,.2]]
 
 let clockOffset = 0;
 
-let loopIt = false;
+//let loopIt = false;
 
 //modes for battery charging: grid, solar
-let mode = 'solar';
+//let mode = 'solar';
 
 //flag for prediction
-let eventLikely = false;
-let tThresh = 85;
-let predictMode = true;
+//let eventLikely = false;
+//let tThresh = 85;
+//let predictMode = true;
 
 
 function predictionSetup(){
@@ -66,7 +76,7 @@ function predictionSetup(){
   //print(weather.getColumn('Avg_Temp'));
 }
 
-function predictionLoop(){
+/*function predictionLoop(){
 
   //100ms viz = 1 hour irl
   clock = (millis()/runSpeed) - clockOffset;

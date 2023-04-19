@@ -70,9 +70,6 @@ function draw(){
   let eventFlag = false;
 
   if(day<=daysInMonth[testMonth-1]){
-    /*if(day == 1){
-      saveFrames('out', 'png', 1, 25);
-    }*/
 
     tempPrediction()
 
@@ -160,10 +157,6 @@ function draw(){
 
   drawKey();
 
-}
-
-function outputFrames(){
-  saveFrames('out', 'png', 1, 25);
 }
 
 function drawKey(){

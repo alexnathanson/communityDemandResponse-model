@@ -9,6 +9,19 @@
     </div>
     <main>
 
+      <div id="testSettingsContainer">
+        <div class="slideparent">
+            <label for="rSpeed" class="slider-label">Speed: </label>
+            <div class="slidecontainer">
+              <input type="range" min="1" max="100" value="75" class="slider" id="rSpeed" name="rSpeed" onchange="document.getElementById('rSpeedAmt').innerHTML=value + '%';/*updateSliderSpeed(this.id)*/">
+            </div>
+
+            <span id='rSpeedAmt'></span>
+            1 hour = <span id='millis'></span> seconds
+
+          </div>  
+      </div>
+      
       <div id="canvas-container">
         <div id="p5-canvas">
         </div>
@@ -16,8 +29,8 @@
     </main>
 
     <script src="js/AggregatorClasses.js"></script>
-    <script src="js/predictive-aggregator.js"></script>
-    <script src="js/network-viz.js"></script>
+    <script src="js/model-runner.js"></script>
+    <!-- <script src="js/network-viz.js"></script> -->
 
   </body>
 </html>

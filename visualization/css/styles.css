@@ -38,6 +38,9 @@ input[type=range]{
 	width: 100%;
 }
 
+.package-details{
+	text-indent: 2em;
+}
 
 /*** TOOL TIP ***/
 .tooltip {

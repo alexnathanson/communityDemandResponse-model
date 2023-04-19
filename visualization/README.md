@@ -21,3 +21,19 @@ location
 
 
 describe the lexus diagram
+
+
+## Psuedo Code
+
+Set up the model
+* participants
+* data
+
+Each loop represents 1 hour
+
+Each hour it 
+* checks if event is happening
+* checks if an alert has been issued
+* predicts if an alert is likely based on weather
+* determines what to do with available energy
+* updates energy production and consumption stats

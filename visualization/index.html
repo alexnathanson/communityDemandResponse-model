@@ -1,8 +1,8 @@
 <html>
   <head>
     <link rel="stylesheet" href="css/styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.js"></script>
-  </head>
+<!--     <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.js"></script>
+ -->  </head>
   <body>
 
     <div id="nav">
@@ -43,7 +43,7 @@
           The Con Ed system covers all 5 NYC boroughs and Westchester. It is composed of <a href='https://cdnc-dcxprod2-sitecore.azureedge.net/-/media/files/coned/documents/save-energy-money/rebates-incentives-tax-credits/smart-usage-rewards/networks-and-tiers.pdf' target="_blank" class="tooltip">83 networks<span class="tooltiptext">Detailed network info can be found here.</span></a>. In some cases, payments vary based on network and borough.<br>
           
           <p>
-            <select name="networks" id="networks" onchange="updateNetwork()">
+            <select name="network" id="network" onchange="updateNetwork()">
             </select>
           </p>
 
@@ -60,20 +60,38 @@
             <label for="random">Randomize participant tiers</label><br>
           </p> -->
 
-          <h4>Available System Components</h4>
-          <p>
+          <h4>Available Hardware Packages</h4>
+          <!-- <p>
             <input type="radio" id="uniform" name="uniform" value="uniform" checked>
             <label for="uniform">All participants have uniform characteristics, except for location</label><br>
             <input type="radio" id="random" name="uniform" value="randomize">
             <label for="random">Randomize participant characteristics within assumed ranges</label><br>
+          </p> -->
+
+          <p>
+            <input type="radio" id="p1" name="package" value="p1" checked>
+            <label for="uniform" >Package 1: Hybrid</label><br>
+            <div class="package-details">Includes: PV module, battery, hybrid inverter</div><br>
+            <input type="radio" id="p2" name="package" value="p2">
+            <label for="random">Package 2: Grid Tied Solar</label><br>
+            <div class="package-details">Includes: PV module, grid-tied inverter</div><br>
+            <input type="radio" id="p3" name="package" value="p3">
+            <label for="random">Package 3: Off-grid Solar</label><br>
+            <div class="package-details">Includes: PV module, battery, off-grid inverter</div><br>
+            <input type="radio" id="p4" name="package" value="p4">
+            <label for="random">Package 4: Battery</label><br>
+            <div class="package-details">Includes: battery, hybrid inverter</div><br>
+
           </p>
 
-          <input type="checkbox" id="PV" name="PV" value="PV" checked>
+          <input type="checkbox" id="smart-relay" name="smart-relay" value="true" checked>
+          <label for="smart-relay">Include smart relays/outlets</label><br>
+          <!-- <input type="checkbox" id="PV" name="PV" value="PV" checked>
           <label for="PV">solar panel</label><br>
           <input type="checkbox" id="battery" name="battery" value="battery" checked>
           <label for="battery">battery</label><br>
           <input type="checkbox" id="relay" name="relay" value="relay" checked>
-          <label for="relay">smart relay</label>
+          <label for="relay">smart relay</label> -->
 
      <!--      <h4>Communication and Control Methods</h4>
           <input type="checkbox" id="email" name="email" value="email" checked>
@@ -99,7 +117,7 @@
           <input type="radio" id="day" name="timeperiod" value="day">
           <label for="day">1 Day (no event)</label><br>
 
-          <div class="slideparent">
+          <!-- <div class="slideparent">
             <label for="rSpeed" class="slider-label">Speed: </label>
             <div class="slidecontainer">
               <input type="range" min="1" max="100" value="75" class="slider" id="rSpeed" name="rSpeed" onchange="updateSliderSpeed(this.id)">
@@ -108,16 +126,16 @@
             <span id='rSpeedAmt'></span><br>
             1 hour = <span id='millis'></span> seconds
 
-          </div>
+          </div> -->
 
-          <h4>Optimization</h4>
+          <!-- <h4>Optimization</h4>
           <input type="radio" id="optimize-energy" name="pc" value="optimize">
           <label for="optimize-energy">Optimize Participants for Energy Efficiency</label><br>
           <input type="radio" id="optimize-income" name="pc" value="optimize-income" checked>
-          <label for="optimize">Optimize Participants for Maximizing Income</label><br>
+          <label for="optimize">Optimize Participants for Maximizing Income</label><br> -->
           <p>
-            <button type="submit" name="network"  formaction="network.html">Run Network</button>
-            <button type="submit" name="individual" formaction="single-site.html">Run Individual</button>
+            <button type="submit" name="run" value="network"  formaction="network.html">Run Network</button>
+            <button type="submit" name="run" value="single" formaction="single-site.html">Run Individual</button>
 
           </p>
       </form> 
