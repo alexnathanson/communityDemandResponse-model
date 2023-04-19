@@ -17,9 +17,9 @@
           <div class="slideparent">
             <label for="participants" class="slider-label">Amount of Participants</label>
             <div class="slidecontainer">
-              <input type="range" min="1" max="1000" value="100" class="slider" id="participants" name="participants" oninput="updateSliderParticipants()"> 
+              <input type="range" min="2" max="1000" value="100" class="slider" id="participants" name="participants" oninput="updateSliderParticipants()"> 
             </div>
-            <span class="tooltip"><span id='participantAmt'></span> households<span class="tooltiptext">A participant can be any Con Ed customer with a dedicated smart meter.</span></span>
+            <span class="tooltip"><span id='participantAmt'></span> participants<span class="tooltiptext">A participant can be any Con Ed customer with a dedicated smart meter.</span></span>
           </div>
 
           <div class="slideparent">
@@ -34,10 +34,10 @@
           <h3>Participant Characteristics:</h3>
 
           <h4>Con Ed DR Programs</h4>
-          <input type="checkbox" id="CRSP" name="CRSP" value="true" checked>
-          <label for="CRSP" class="tooltip">CRSP<span class="tooltiptext">Commercial System Relief Program events are typically system wide calls scheduled with 21 hours advance notice. The goal of CSRP is peak shaving.</span></label><br>
+          <input type="checkbox" id="CSRP" name="CSRP" value="true" checked>
+          <label for="CSRP" class="tooltip">CSRP<span class="tooltiptext">Commercial System Relief Program events are typically system wide calls scheduled with 21 hours advance notice. The goal of CSRP is peak shaving.</span></label><br>
           <input type="checkbox" id="DLRP" name="DLRP" value="true" checked>
-          <label for="DLRP" class="tooltip">DLRP<span class="tooltiptext">Distribution Load Relief Program events are not typically system wide and are determined based on an individual network's needs. DLRP notifies participants 2 hours or less in advance to address immediate grid reliability issues.</label></label><br>
+          <label for="DLRP" class="tooltip">DLRP<span class="tooltiptext">Distribution Load Relief Program events are typically network specific (not system wide) and are determined based on an individual network's needs. DLRP notifies participants 2 hours or less in advance to address immediate grid reliability issues.</label></label><br>
 
           <h4>Network</h4>
           The Con Ed system covers all 5 NYC boroughs and Westchester. It is composed of <a href='https://cdnc-dcxprod2-sitecore.azureedge.net/-/media/files/coned/documents/save-energy-money/rebates-incentives-tax-credits/smart-usage-rewards/networks-and-tiers.pdf' target="_blank" class="tooltip">83 networks<span class="tooltiptext">Detailed network info can be found here.</span></a>. In some cases, payments vary based on network and borough.<br>
@@ -69,16 +69,19 @@
           </p> -->
 
           <p>
-            <input type="radio" id="p1" name="package" value="p1" checked>
+            <input type="radio" id="p1" name="package" value="1" checked>
+            
             <label for="uniform" >Package 1: Hybrid</label><br>
-            <div class="package-details">Includes: PV module, battery, hybrid inverter</div><br>
-            <input type="radio" id="p2" name="package" value="p2">
+            <div class="package-details">Includes: PV module, battery, hybrid inverter</div>
+            <div class="package-details"><span class="tooltip">Estimated RoI:<span class="tooltiptext">Assumes full participation with above settings.</span></span></div><br>
+
+            <input type="radio" id="p2" name="package" value="2">
             <label for="random">Package 2: Grid Tied Solar</label><br>
             <div class="package-details">Includes: PV module, grid-tied inverter</div><br>
-            <input type="radio" id="p3" name="package" value="p3">
+            <input type="radio" id="p3" name="package" value="3">
             <label for="random">Package 3: Off-grid Solar</label><br>
             <div class="package-details">Includes: PV module, battery, off-grid inverter</div><br>
-            <input type="radio" id="p4" name="package" value="p4">
+            <input type="radio" id="p4" name="package" value="4">
             <label for="random">Package 4: Battery</label><br>
             <div class="package-details">Includes: battery, hybrid inverter</div><br>
 
@@ -110,9 +113,9 @@
           <label for="fullseason">Full 2022 Season (May 1 - Sept 31)</label><br>
           <input type="radio" id="month" name="timeperiod" value="august" checked>
           <label for="month">All of August 2022</label><br>
-          <input type="radio" id="week" name="timeperiod" value="week">
+          <input type="radio" id="week" name="timeperiod" value="aWeek">
           <label for="week">1st Week of July 2022 (0 events)</label><br>
-          <input type="radio" id="week" name="timeperiod" value="week">
+          <input type="radio" id="week" name="timeperiod" value="jWeek">
           <label for="week">1st Week of August 2022 (2 events)</label><br>
           <input type="radio" id="day" name="timeperiod" value="day">
           <label for="day">1 Day (no event)</label><br>
@@ -141,7 +144,7 @@
       </form> 
 
     </main>
-    <script src="js/AggregatorClasses.js"></script>
+    <script src="js/AggregatorModel.js"></script>
     <script src="js/formhandler.js"></script>
 
   </body>

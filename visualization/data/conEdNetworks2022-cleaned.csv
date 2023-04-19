@@ -1,9 +1,9 @@
 borough,network,start time,end time,tier
-bronx,central,14:00,18:00,2
+bronx,central bronx,14:00,18:00,2
 bronx,fordham,16:00,20:00,2
-bronx,northeast,16:00,20:00,2
+bronx,northeast bronx,16:00,20:00,2
 bronx,riverdale,16:00,20:00,1
-bronx,southeast,16:00,20:00,2
+bronx,southeast bronx,16:00,20:00,2
 bronx,west,16:00,20:00,2
 brooklyn,bay ridge,14:00,18:00,1
 brooklyn,borough hall,14:00,18:00,2

@@ -2,6 +2,7 @@
   <head>
     <link rel="stylesheet" href="css/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.js"></script>
+    <script src="js/secrets.js"></script>
   </head>
   <body>
     <div id="nav">
@@ -10,16 +11,19 @@
     <main>
 
       <div id="testSettingsContainer">
-        <div class="slideparent">
-            <label for="rSpeed" class="slider-label">Speed: </label>
-            <div class="slidecontainer">
-              <input type="range" min="1" max="100" value="75" class="slider" id="rSpeed" name="rSpeed" onchange="document.getElementById('rSpeedAmt').innerHTML=value + '%';model.runSpeed =(1-value*.01)*1000;document.getElementById('millis').innerHTML=Math.round((1-value*.01)*1000);">
-            </div>
+        <div>
+          <strong>Timeframe:</strong> <span id="timeframe"></span>
+          <span class="slideparent">
+              <label for="rSpeed" class="slider-label"> <strong>Speed: </strong></label>
+              <div class="slidecontainer">
+                <input type="range" min="1" max="100" value="75" class="slider" id="rSpeed" name="rSpeed" onchange="document.getElementById('rSpeedAmt').innerHTML=value + '%';model.runSpeed =(1-value*.01)*1000;document.getElementById('millis').innerHTML=Math.round((1-value*.01)*1000);">
+              </div>
 
-            <span id='rSpeedAmt'></span>
-            1 hour = <span id='millis'></span> ms
+              <span id='rSpeedAmt'></span>
+              1 hour = <span id='millis'></span> ms
 
-          </div>  
+            </span>  
+          </div>
       </div>
       
       <div id="canvas-container">
@@ -28,8 +32,7 @@
       </div>
     </main>
 
-    <script src="js/AggregatorClasses.js"></script>
-    <script src="js/model-runner.js"></script>
+    <script src="js/AggregatorModel.js"></script>
     <script src="js/network-viz.js"></script>
 
   </body>

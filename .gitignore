@@ -5,3 +5,6 @@
 /reports/*
 
 nrelKey.txt
+secrets.js
+
+/additional-raw-data/*

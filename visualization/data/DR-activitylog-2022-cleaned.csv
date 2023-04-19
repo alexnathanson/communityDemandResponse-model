@@ -1,0 +1,110 @@
+Event Date,Administrator,Program,Start Time,End Time,Event Duration,Zone/Network,Event/Test,Event Type
+2/16/2022,NYISO,SCR,17:00,18:00,1:00,Zone J,Test,Test
+2/16/2022,NYISO,SCR,16:00,17:00,1:00,Zones H I,Test,Test
+4/6/2022,NYISO,SCR,16:00,17:00,1:00,Zone J,Test,Test
+5/31/2022,Con Edison,DLRP,16:00,22:00,6:00,Fresh Kills,Event,Immediate
+5/31/2022,Con Edison,DLRP,18:00,23:00,5:00,Fox Hills,Event,Immediate
+7/18/2022,Con Edison,DLRP,16:30,18:30,2:00,All,Test,Test
+7/18/2022,Con Edison,DLRP,18:00,0:00,6:00,City Hall,Event,Immediate
+7/20/2022,Con Edison,CSRP,11:00,15:00,4:00,All,Event,Planned
+7/20/2022,Con Edison,CSRP,14:00,18:00,4:00,All,Event,Planned
+7/20/2022,Con Edison,CSRP,16:00,20:00,4:00,All,Event,Planned
+7/20/2022,Con Edison,CSRP,19:00,23:00,4:00,All,Event,Planned
+7/20/2022,Con Edison,Term DLM,11:00,15:00,4:00,All,Event,Event
+7/20/2022,Con Edison,Term DLM,14:00,18:00,4:00,All,Event,Event
+7/20/2022,Con Edison,Term DLM,16:00,20:00,4:00,All,Event,Event
+7/20/2022,Con Edison,Term DLM,19:00,23:00,4:00,All,Event,Event
+7/20/2022,Con Edison,Auto-DLM,14:00,18:00,4:00,DA Forecast 11400 MW,Event,Event
+7/20/2022,Con Edison,BYOT,11:00,15:00,4:00,All,Event,Event
+7/20/2022,Con Edison,BYOT,14:00,18:00,4:00,All,Event,Event
+7/20/2022,Con Edison,BYOT,16:00,20:00,4:00,All,Event,Event
+7/20/2022,Con Edison,BYOT,19:00,23:00,4:00,All,Event,Event
+7/20/2022,Con Edison,DLRP,17:30,23:30,6:00,Fresh Kills,Event,Immediate
+7/20/2022,Con Edison,DLRP,19:00,0:00,6:00,Ossining West,Event,Immediate
+7/21/2022,Con Edison,CSRP,11:00,15:00,4:00,All,Event,Planned
+7/21/2022,Con Edison,CSRP,14:00,18:00,4:00,All,Event,Planned
+7/21/2022,Con Edison,CSRP,16:00,20:00,4:00,All,Event,Planned
+7/21/2022,Con Edison,CSRP,19:00,23:00,4:00,All,Event,Planned
+7/21/2022,Con Edison,Term DLM,11:00,15:00,4:00,All,Event,Event
+7/21/2022,Con Edison,Term DLM,14:00,18:00,4:00,All,Event,Event
+7/21/2022,Con Edison,Term DLM,16:00,20:00,4:00,All,Event,Event
+7/21/2022,Con Edison,Term DLM,19:00,23:00,4:00,All,Event,Event
+7/21/2022,Con Edison,Auto-DLM,14:00,18:00,4:00,All,Event,Event
+7/21/2022,Con Edison,BYOT,11:00,15:00,4:00,All,Event,Event
+7/21/2022,Con Edison,BYOT,14:00,18:00,4:00,All,Event,Event
+7/21/2022,Con Edison,BYOT,16:00,20:00,4:00,All,Event,Event
+7/21/2022,Con Edison,BYOT,19:00,23:00,4:00,All,Event,Event
+7/21/2022,Con Edison,DLRP,16:00,22:00,6:00,Jamaica,Event,Immediate
+7/22/2022,Con Edison,Term DLM,11:00,15:00,4:00,All,Event,Event
+7/22/2022,Con Edison,Term DLM,14:00,18:00,4:00,All,Event,Event
+7/22/2022,Con Edison,Term DLM,16:00,20:00,4:00,All,Event,Event
+7/22/2022,Con Edison,Term DLM,19:00,23:00,4:00,All,Event,Event
+7/22/2022,Con Edison,Auto-DLM,14:00,18:00,4:00,All,Event,Event
+7/24/2022,Con Edison,DLRP,16:00,20:00,4:00,Flatbush,Event,Contingency
+7/25/2022,Con Edison,Term DLM,11:00,15:00,4:00,All,Event,Event
+7/25/2022,Con Edison,Term DLM,14:00,18:00,4:00,All,Event,Event
+7/25/2022,Con Edison,Term DLM,16:00,20:00,4:00,All,Event,Event
+7/25/2022,Con Edison,Term DLM,19:00,23:00,4:00,All,Event,Event
+7/25/2022,Con Edison,Auto-DLM,14:00,18:00,4:00,All,Event,Event
+7/25/2022,Con Edison,DLRP,14:00,18:00,4:00,Park Slope,Event,Contingency
+8/4/2022,Con Edison,Term DLM,11:00,15:00,4:00,All,Event,Event
+8/4/2022,Con Edison,Term DLM,14:00,18:00,4:00,All,Event,Event
+8/4/2022,Con Edison,Term DLM,16:00,20:00,4:00,All,Event,Event
+8/4/2022,Con Edison,Term DLM,19:00,23:00,4:00,All,Event,Event
+8/4/2022,Con Edison,Auto-DLM,14:00,18:00,4:00,All,Event,Event
+8/4/2022,Con Edison,CSRP,11:00,15:00,4:00,All,Event,Planned
+8/4/2022,Con Edison,CSRP,14:00,18:00,4:00,All,Event,Planned
+8/4/2022,Con Edison,CSRP,16:00,20:00,4:00,All,Event,Planned
+8/4/2022,Con Edison,CSRP,19:00,23:00,4:00,All,Event,Planned
+8/4/2022,Con Edison,BYOT,11:30,15:30,4:00,All,Event,Event
+8/4/2022,Con Edison,BYOT,14:00,18:00,4:00,All,Event,Event
+8/4/2022,Con Edison,BYOT,16:00,20:00,4:00,All,Event,Event
+8/4/2022,Con Edison,BYOT,19:00,23:00,4:00,All,Event,Event
+8/5/2022,Con Edison,Term DLM,11:00,15:00,4:00,All,Event,Event
+8/5/2022,Con Edison,Term DLM,14:00,18:00,4:00,All,Event,Event
+8/5/2022,Con Edison,Term DLM,16:00,20:00,4:00,All,Event,Event
+8/5/2022,Con Edison,Term DLM,19:00,23:00,4:00,All,Event,Event
+8/5/2022,Con Edison,Auto-DLM,14:00,18:00,4:00,All,Event,Event
+8/5/2022,Con Edison,CSRP,11:00,15:00,4:00,All,Event,Planned
+8/5/2022,Con Edison,CSRP,14:00,18:00,4:00,All,Event,Planned
+8/5/2022,Con Edison,CSRP,16:00,20:00,4:00,All,Event,Planned
+8/5/2022,Con Edison,CSRP,19:00,23:00,4:00,All,Event,Planned
+8/5/2022,Con Edison,BYOT,11:00,15:00,4:00,All,Event,Event
+8/5/2022,Con Edison,BYOT,14:00,18:00,4:00,All,Event,Event
+8/5/2022,Con Edison,BYOT,16:00,20:00,4:00,All,Event,Event
+8/5/2022,Con Edison,BYOT,19:00,23:00,4:00,All,Event,Event
+8/8/2022,Con Edison,Term DLM,11:00,15:00,4:00,All,Event,Event
+8/8/2022,Con Edison,Term DLM,14:00,18:00,4:00,All,Event,Event
+8/8/2022,Con Edison,Term DLM,16:00,20:00,4:00,All,Event,Event
+8/8/2022,Con Edison,Term DLM,19:00,23:00,4:00,All,Event,Event
+8/8/2022,Con Edison,Auto-DLM,14:00,18:00,4:00,All,Event,Event
+8/8/2022,Con Edison,CSRP,11:00,15:00,4:00,All,Event,Planned
+8/8/2022,Con Edison,CSRP,14:00,18:00,4:00,All,Event,Planned
+8/8/2022,Con Edison,CSRP,16:00,20:00,4:00,All,Event,Planned
+8/8/2022,Con Edison,CSRP,19:00,23:00,4:00,All,Event,Planned
+8/8/2022,Con Edison,BYOT,11:00,15:00,4:00,All,Event,Event
+8/8/2022,Con Edison,BYOT,14:00,18:00,4:00,All,Event,Event
+8/8/2022,Con Edison,BYOT,16:00,20:00,4:00,All,Event,Event
+8/8/2022,Con Edison,BYOT,19:00,23:00,4:00,All,Event,Event
+8/8/2022,Con Edison,DLRP,11:30,17:30,6:00,Ridgewood,Event,Immediate
+8/8/2022,Con Edison,DLRP,15:00,21:00,6:00,Ossining West,Event,Immediate
+8/9/2022,Con Edison,Term DLM,11:00,15:00,4:00,All,Event,Event
+8/9/2022,Con Edison,Term DLM,14:00,18:00,4:00,All,Event,Event
+8/9/2022,Con Edison,Term DLM,16:00,20:00,4:00,All,Event,Event
+8/9/2022,Con Edison,Term DLM,19:00,23:00,4:00,All,Event,Event
+8/9/2022,Con Edison,Auto-DLM,14:00,18:00,4:00,All,Event,Event
+8/9/2022,Con Edison,CSRP,11:00,15:00,4:00,All,Event,Planned
+8/9/2022,Con Edison,CSRP,14:00,18:00,4:00,All,Event,Planned
+8/9/2022,Con Edison,CSRP,16:00,20:00,4:00,All,Event,Planned
+8/9/2022,Con Edison,CSRP,19:00,23:00,4:00,All,Event,Planned
+8/9/2022,Con Edison,BYOT,11:00,15:00,4:00,All,Event,Event
+8/9/2022,Con Edison,BYOT,14:00,18:00,4:00,All,Event,Event
+8/9/2022,Con Edison,BYOT,16:00,20:00,4:00,All,Event,Event
+8/9/2022,Con Edison,BYOT,19:00,23:00,4:00,All,Event,Event
+8/9/2022,Con Edison,DLRP,11:30,17:30,6:00,Rego Park,Event,Immediate
+8/9/2022,Con Edison,DLRP,8:30,14:30,6:00,Central Bronx,Event,Immediate
+8/9/2022,Con Edison,DLRP,19:00,0:00,5:00,Southeast Bronx,Event,Immediate
+8/9/2022,Con Edison,DLRP,19:00,0:00,5:00,Cedar Street,Event,Immediate
+8/24/2022,NYISO,SCR,14:00,15:00,1:00,Zone J,Test,Test
+8/24/2022,NYISO,SCR,16:00,17:00,1:00,Zones H I,Test,Test
+10/5/2022,NYISO,SCR,13:00,14:00,1:00,Zone J,Test,Test

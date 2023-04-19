@@ -1,3 +1,30 @@
+//get model settings from query string
+const urlParams = new URLSearchParams(location.search);
+let testSettings = {};
+
+let qString = '?';
+for (const [key, value] of urlParams.entries()) {
+  if(qString != '?'){
+    qString = qString + "&";
+  }
+  testSettings[key]=value;
+  qString=qString + key + '=' + value
+}
+
+//rewrite nav links
+document.getElementById('network').href = document.getElementById('network').href + qString
+document.getElementById('settings').href = document.getElementById('settings').href + qString
+document.getElementById('single').href = document.getElementById('single').href + qString
+
+document.getElementById('timeframe').innerHTML = testSettings['timeperiod']
+
+//instantiate new model
+let model = new Model()
+model.setupModel(testSettings);
+
+
+/*********visualization stuff*********/
+
 let img, weather;
 let imgX = 1713;
 let imgY = 964;
@@ -34,17 +61,21 @@ function setup() {
   background(255)
   img.resize(canvasX,canvasY-infoBarY)
 
+  console.log(model.participants.length)
   //place circles
-  /*for (let p =0;p<model.amtP;p++){
-    participants.push(new Participant(int(random(canvasX-50-sideBarX))+25+sideBarX,int(random(canvasY-infoBarY-50))+25));
-  }*/
+  while(model.participants.length = 0){
+    
+  }
+  for (let p =0;p<model.participants.length;p++){
+    console.log('???')
+    model.participants[p].location = [Math.floor(random(canvasX-50-sideBarX))+25+sideBarX,Math.floor(random(canvasY-infoBarY-50))+25];
+  }
 
-  partC = model.participants[0].partC;
-  autoC =  model.participants[0].autoC;
-  batC = model.participants[0].batC;
-  alertC = model.participants[0].alertC;
-  manuC = model.participants[0].manuC;
-
+  partC = color(0,255,0);
+  autoC =  color(255,150,255);
+  batC = color(0,255,255);
+  alertC = color(255,100,0);
+  manuC = color(100,150,255);
   timeC = color(150,150,255);
   elapsedTimeC = color(255,255,100);
 
@@ -139,11 +170,11 @@ function draw(){
     }*/
 
 
-    /*for(let p=0; p < participants.length;p++){
-      participants[p].drawP(eventFlag, eventNow);
-    }*/
+    for(let p=0; p < model.participants.length;p++){
+      drawP(model.participants[p],eventFlag, eventNow);
+    }
 
-    drawInfoBar(model.eventNow);
+    drawInfoBar();
 
     drawClock(canvasX-(infoBarY*.5),ibY+(infoBarY*.5), model.elapsedHours, model.eventNow);
 
@@ -202,31 +233,36 @@ function drawKey(){
   pop()
 }
 
-function drawInfoBar(evF){
+function drawInfoBar(){
 //progress bar parent box
 
   textSize(16);
 
   bW = canvasX-infoBarY;
 
+  let totDays = ((model.endDay.getTime()-model.startDay.getTime())/1000/60/60/24)
+  let currentHour = (model.nowMS-model.startDay.getTime())/1000/60/60
+
   //width of each day within box
-  dW = bW/model.daysInMonth[testMonth-1];
+  dW = bW/(totDays+1);
 
   fill(timeC);
   rect(0,ibY,bW,canvasY);
 
   //progress bar
-  if(evF){
+  if(model.eventNow){
     fill(alertC)
+  } else if(model.alertNow){
+    fill(0,255,0)
   } else {
     fill(elapsedTimeC)
   }
   stroke(0)
-  rect(0,ibY,(model.elapsedHours/24)*(bW/(model.daysInMonth[testMonth-1])),canvasY);
+  rect(0,ibY, currentHour*(dW/24),canvasY);
 
   //day ticks
   stroke(0)
-  for (let t = 1; t <= model.daysInMonth[testMonth-1]; t++){
+  for (let t = 1; t <= totDays; t++){
     tX = t*dW;
     line(tX, canvasY,tX,canvasY-20);
   }
@@ -333,3 +369,58 @@ function drawClock(cX,cY,c,eF){
   }
   arc(cX,cY, infoBarY-10, infoBarY-10, -HALF_PI, (((c% 24)/24)*TWO_PI)-HALF_PI);
 }
+
+
+function drawP(p, evFuture,evNow){
+  push();
+
+    //draw P with drop shadow
+    fill(255);
+    //circle(this.location[0],this.location[1],this.batStat * 15);
+    textAlign(CENTER,CENTER);
+    textStyle(BOLD);
+    fill(0);
+    textSize(16);
+
+    let pT = 'P';
+    if(evNow){
+      /*fill(255);
+      circle(this.location[0],this.location[1], 30,30)*/
+      pT = "!";
+    }
+    text(pT,p.location[0]+1,p.location[1]+1)
+    if(evFuture){
+      fill(alertC)
+    } else {
+      fill(255,255,0);
+    }
+    text(pT,p.location[0],p.location[1])
+    
+    //draw info bars
+    strokeWeight(5);
+
+    //bat
+    noFill();
+    stroke(batC)
+    arc(p.location[0],p.location[1], 30,30, -HALF_PI, percToRad(p.package.batState)-HALF_PI);
+
+    //DLRP participation
+    noFill();
+    stroke(autoC)
+    arc(p.location[0],p.location[1], 45,45, -HALF_PI, percToRad(p.dlrp.participationRateAvg)-HALF_PI);
+
+    //CSRP participation
+    noFill();
+    stroke(manuC)
+    arc(p.location[0],p.location[1], 60,60, -HALF_PI, percToRad(p.csrp.participationRateAvg)-HALF_PI);
+
+    //tot participation
+    noFill();
+    stroke(partC)
+    arc(p.location[0],p.location[1], 75,75, -HALF_PI, percToRad(2/(p.dlrp.participationRateAvg+p.csrp.participationRateAvg))-HALF_PI);
+  pop();
+}
+
+function percToRad(p){
+    return p * TWO_PI;
+  }

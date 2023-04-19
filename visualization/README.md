@@ -37,3 +37,15 @@ Each hour it
 * predicts if an alert is likely based on weather
 * determines what to do with available energy
 * updates energy production and consumption stats
+
+
+# Model Design
+
+## Inputs
+* Con Ed networks (DR event and program characteristics)
+* DR event history
+* Historical Actual Weather (for event prediction) actual weather is required instead of TMY weather to match the event history
+* NREL PV watts (primarily for sun hours)
+* Load profiles 
+* hardware packages to test
+
