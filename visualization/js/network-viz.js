@@ -8,6 +8,8 @@ let canvasX, canvasY, ibY;
 
 let partC, batC, alertC,timeC, elapsedTimeC, autoC, manuC;
 
+let testMonth = 8;
+
 function preload() {
   img = loadImage('assets/crownheights-googlemaps.png');
 
@@ -33,43 +35,38 @@ function setup() {
   img.resize(canvasX,canvasY-infoBarY)
 
   //place circles
-  for (let p =0;p<amtP;p++){
+  /*for (let p =0;p<model.amtP;p++){
     participants.push(new Participant(int(random(canvasX-50-sideBarX))+25+sideBarX,int(random(canvasY-infoBarY-50))+25));
-  }
+  }*/
 
-  partC = participants[0].partC;
-  autoC =  participants[0].autoC;
-  batC = participants[0].batC;
-  alertC = participants[0].alertC;
-  manuC = participants[0].manuC;
+  partC = model.participants[0].partC;
+  autoC =  model.participants[0].autoC;
+  batC = model.participants[0].batC;
+  alertC = model.participants[0].alertC;
+  manuC = model.participants[0].manuC;
 
   timeC = color(150,150,255);
   elapsedTimeC = color(255,255,100);
 
   //instantiate events
-  for (e of event21){
+  /*for (e of event21){
     events.push(new Event(e,15,4,21));
   }
   for (e of event2){
     events.push(new Event(e,15,4,2));
-  }
+  }*/
   
   //print(weather.getColumn('Avg_Temp'));
 }
 
 function draw(){
 
-  predictionLoop()
-  /*//100ms viz = 1 hour irl
-  clock = millis()/200 - clockOffset;
-  //new Date(year,month,day,hours)
-  //console.log(1+int(clock/23));
-  day = int(clock/24)+1;
-  //hour = clock% 24;*/
+  //predictionLoop()
 
-  let eventFlag = false;
 
-  if(day<=daysInMonth[testMonth-1]){
+  //let eventFlag = false;
+
+  /*if(day<=model.daysInMonth[testMonth-1]){
 
     tempPrediction()
 
@@ -80,10 +77,12 @@ function draw(){
       if (s.isUpcoming(int(clock))==true){
         eventFlag = true;
       }
-    }
+    }*/
+
+    eventFlag = model.alertNow;
 
     //check for ongoing event
-    let eF = false;
+    /*let eF = false;
     for (let s of events){
       if (s.isNow(int(clock))==true){
         //check if the event is just starting
@@ -98,8 +97,8 @@ function draw(){
         eF = true;
         break;
       }
-    }
-    eventNow= eF;
+    }*/
+    eventNow= model.eventNow;
 
     /**** COMMENT OUT FOR WHITE BACKGROUND***/
     if(eventFlag){
@@ -111,7 +110,7 @@ function draw(){
     image(img, 0,0);
 
     //day light overlay
-    fill(0,0,0,map(min(abs(12-clock%24),6),0,6,50,120));
+    fill(0,0,0,map(min(abs(12-model.elapsedHours%24),6),0,6,50,120));
     rect(0,0,canvasX,canvasY);
 
     /*** END COMMENT OUT FOR WHITE BACKGROUND ***/
@@ -120,7 +119,7 @@ function draw(){
     //background(255);
 
     //hourly activity
-    if(int(clock) != prevHour){
+    /*if(int(clock) != prevHour){
       prevHour = int(clock);
       
       //update energy consumption if event is not anticipated
@@ -137,23 +136,23 @@ function draw(){
         participants[p].updateEnergyChargePV();
       }
       
-    }
+    }*/
 
 
-    for(let p=0; p < participants.length;p++){
+    /*for(let p=0; p < participants.length;p++){
       participants[p].drawP(eventFlag, eventNow);
-    }
+    }*/
 
-    drawInfoBar(eventFlag);
+    drawInfoBar(model.eventNow);
 
-    drawClock(canvasX-(infoBarY*.5),ibY+(infoBarY*.5), clock, eventFlag);
+    drawClock(canvasX-(infoBarY*.5),ibY+(infoBarY*.5), model.elapsedHours, model.eventNow);
 
-  } else {
+  /*} else {
     //reset clock to 0 at end of month
     if(loopIt){
       clockOffset = clock + clockOffset;
     }
-  }
+  }*/
 
   drawKey();
 
@@ -199,12 +198,7 @@ function drawKey(){
     line(kX,kY + (kH *6),kX+kW,kY + (kH *6));
     fill(0);
     noStroke();
-    if(predictMode){
-      
-      text("Prediction Mode On",kX+kW*.5, kY + (kH *6));
-    } else {
-      text("Prediction Mode Off",kX+kW*.5, kY + (kH *6));
-    }
+  
   pop()
 }
 
@@ -216,7 +210,7 @@ function drawInfoBar(evF){
   bW = canvasX-infoBarY;
 
   //width of each day within box
-  dW = bW/daysInMonth[testMonth-1];
+  dW = bW/model.daysInMonth[testMonth-1];
 
   fill(timeC);
   rect(0,ibY,bW,canvasY);
@@ -228,11 +222,11 @@ function drawInfoBar(evF){
     fill(elapsedTimeC)
   }
   stroke(0)
-  rect(0,ibY,(clock/24)*(bW/(daysInMonth[testMonth-1])),canvasY);
+  rect(0,ibY,(model.elapsedHours/24)*(bW/(model.daysInMonth[testMonth-1])),canvasY);
 
   //day ticks
   stroke(0)
-  for (let t = 1; t <= daysInMonth[testMonth-1]; t++){
+  for (let t = 1; t <= model.daysInMonth[testMonth-1]; t++){
     tX = t*dW;
     line(tX, canvasY,tX,canvasY-20);
   }
@@ -240,15 +234,15 @@ function drawInfoBar(evF){
   //TEXT
   noStroke();
   fill(0);
-  text(date, 60, ibY+25);
+  text(new Date(model.nowMS), 60, ibY+25);
   //text("TIME: " + (millis()/1000), 100,canvasY+25);
 
   text("Average Network Participation Rate: " + getTotAvgParticipation() + "% ($" + getAvgIncome() + " per participant)", 400, ibY+25);
 
   //draw event flag
   //check for past events
-  for (let s of events){
-    if (clock > s.startTotHour){
+  /*for (let s of events){
+    if (model.elapsedHours > s.startTotHour){
     //circle(int(s.startTotHour*(dW/24)),canvasY+infoBarY-20,15);
     push();
       textAlign(CENTER,CENTER);
@@ -257,7 +251,7 @@ function drawInfoBar(evF){
       text("!",int(s.startTotHour*(dW/24)),canvasY-20);
     pop();
     }
-  }
+  }*/
 
   drawWeather(dW);
   
@@ -265,21 +259,21 @@ function drawInfoBar(evF){
 
 function getTotAvgParticipation(){
   let aP = 0;
-  for (let p of participants){
+  for (let p of model.participants){
     aP = aP + p.participationRateAvg
   }
 
-  return round((aP/participants.length)*100,2)
+  return round((aP/model.participants.length)*100,2)
 }
 
 function getAvgIncome(){
   let aP = 0;
-  for (let p of participants){
+  for (let p of model.participants){
     aP = aP + p.participationRateAvg
   }
 
   //avg participation * 18/kW * .5kW * 2 programs
-  return round((aP/participants.length) * 18 * 0.5 * 2,2)
+  return round((aP/model.participants.length) * 18 * 0.5 * 2,2)
 }
 
 function drawWeather(dW){
@@ -337,5 +331,5 @@ function drawClock(cX,cY,c,eF){
   } else {
     fill(elapsedTimeC)
   }
-  arc(cX,cY, infoBarY-10, infoBarY-10, -HALF_PI, (((clock% 24)/24)*TWO_PI)-HALF_PI);
+  arc(cX,cY, infoBarY-10, infoBarY-10, -HALF_PI, (((c% 24)/24)*TWO_PI)-HALF_PI);
 }

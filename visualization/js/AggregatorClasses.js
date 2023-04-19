@@ -254,7 +254,8 @@ class Model{
     this.runSpeed = 50;
     this.elapsedHours = 0;
     this.eT = 0;
-    this.day = 0;
+    //this.day = 0;
+    this.nowMS//the timestamp within the context of the test timeline
     this.startMS = Date.now();
     this.tempThresh = 85; //optimize this!
     this.eventLikely = false;
@@ -507,17 +508,17 @@ class Model{
       this.eT = Date.now()
       //this.hourlyLoop()
       this.elapsedHours++;
-      console.log(this.elapsedHours)
+      //console.log(this.elapsedHours)
 
       //current point in the test converted into MS
-      let nowMS = this.startDay.getTime() + (this.elapsedHours * 60 * 60 * 1000)
+     this.nowMS = this.startDay.getTime() + (this.elapsedHours * 60 * 60 * 1000)
       //check if event is happening
-      this.checkOngoingActivity(nowMS,'ALL');
+      this.checkOngoingActivity(this.nowMS,'ALL');
       if(this.eventNow){
         console.log('!');
       }
       //check if alert has been issued
-      this.checkAlertActivity(nowMS,'ALL');
+      this.checkAlertActivity(this.nowMS,'ALL');
 
       //determine likelihood of upcoming event
 
