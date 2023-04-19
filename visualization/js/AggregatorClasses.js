@@ -499,19 +499,7 @@ class Model{
 
     this.eT = this.startMS;
 
-    //while(this.running){
-
-      //if(Date.now() - this.eT > this.runSpeed){
-        //this.eT = Date.now()
-    this.hourlyLoop()
-        //this.elapsedHours++;
-        //console.log(this.elapsedHours)
-        /*if(this.elapsedHours > (this.duration * 24)){
-          this.running = false;
-        }*/
-      //} 
-
-    //}
+    this.hourlyLoop();
   }
 
   hourlyLoop(){
@@ -520,7 +508,7 @@ class Model{
       //this.hourlyLoop()
       this.elapsedHours++;
       console.log(this.elapsedHours)
-      
+
       //current point in the test converted into MS
       let nowMS = this.startDay.getTime() + (this.elapsedHours * 60 * 60 * 1000)
       //check if event is happening
@@ -545,7 +533,9 @@ class Model{
       //this.day = Math.floor(this.clock/24)+1;
       //hour = clock% 24;
     }
+
     if(this.elapsedHours <= (this.duration * 24)){
-      window.requestAnimationFrame(hourlyLoop);
+      window.requestAnimationFrame(()=>this.hourlyLoop());
     }
+  }
 }
