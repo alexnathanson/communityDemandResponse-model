@@ -2,12 +2,30 @@
   <head>
     <link rel="stylesheet" href="css/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.js"></script>
+    <script src="js/secrets.js"></script>
   </head>
   <body>
     <div id="nav">
       <a href="index.html" id='settings'>Model Settings</a> |  <a href="single-site.html" id='single'>Single Site View</a> | <a href="network.html" id='network'>Network View</a>
     </div>
     <main>
+      <div id="testSettingsContai
+      ner">
+        <div>
+          <strong>Timeframe:</strong> <span id="timeframe"></span>
+          <span class="slideparent">
+              <label for="rSpeed" class="slider-label"> <strong>Speed: </strong></label>
+              <div class="slidecontainer">
+                <input type="range" min="1" max="100" value="75" class="slider" id="rSpeed" name="rSpeed" onchange="document.getElementById('rSpeedAmt').innerHTML=value + '%';model.runSpeed =(1-value*.01)*1000;document.getElementById('millis').innerHTML=Math.round((1-value*.01)*1000);">
+              </div>
+
+              <span id='rSpeedAmt'></span>
+              1 hour = <span id='millis'></span> ms
+
+            </span>  
+          </div>
+      </div>
+      
       <div id="canvas-container">
         <div id="p5-canvas">
         </div>
@@ -15,6 +33,7 @@
     </main>
 
     <script src="js/AggregatorModel.js"></script>
+    <script src="js/ModelVisualization.js"></script>
     <script src="js/single-site-viz.js"></script>
 
   </body>

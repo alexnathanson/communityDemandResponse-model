@@ -10,6 +10,7 @@ class Participant{
     this.eventStartHour = 11;
 
     this.loadProfile=[];// need to replace this with the real thing
+    this.curtailment = false;
     this.solarAccess = 1.0; //percentage of PSH unobstructed
     this.reservationWh = this.reservationW * eD;
     this.manualParticipationRate = 0.3; //SOURCE: Smart AC Demand Control Program: Impact Evaluation Final Report 
@@ -44,7 +45,15 @@ class Participant{
   //returns wattage produce by solar array at this particular psh%
   //solar access variables needs
   solarProductionW(psh){
-    return this.package.pvWatts * psh * this.solarAccess; 
+    let p = this.package.pvWatts * psh * this.solarAccess;
+
+    if(p > 0){
+      this.package.solarStatus = true;
+    } else {
+      this.package.solarStatus = false;
+    }
+    
+    return p; 
   }
 
   //returns power produce by solar array as a % of battery capacity
@@ -71,8 +80,7 @@ class Participant{
         tempBatState =tempBatState + ((eP * this.package.gridChargeRate)/this.package.batWh)
       }
 
-    //console.log(this.package['batState'])
-
+      this.curtailment = false;
     } else {//if there is an event ongoing
 
       //charge battery with solar if PSH
@@ -89,8 +97,10 @@ class Participant{
 
       if(oP == "CSRP"){
         this.csrp.updateAutoReplacement(rep)
+        this.curtailment = this.csrp.isCurtailing;
       } else if (oP == "DLRP"){
         this.dlrp.updateAutoReplacement(rep)
+        this.curtailment = this.csrp.isCurtailing;
       }
       //update
       tempBatState = tempBatState - (eventLoad/ this.package.batWh)
@@ -119,6 +129,7 @@ class Program{
     this.automatedReplacementHistoryAvg = 1.0;//the % of total demand met by auto replacement
     this.manualCurtailmentHistory = [];
     this.manualCurtailmentHistoryAvg = 1.0; //the % of total demand met by manual curtailment
+    this.isCurtailing = false;
   }
 
   //this needs fixing
@@ -152,9 +163,12 @@ class Program{
     //determine chance of participation
     //assumes 30% chance every hour
     let c = 0;
+    this.isCurtailing = false;
     if(Math.random() < .3){
       c =1
+      this.isCurtailing = true
     }
+
 
     //p*c is the remaining % of demand response need * 30% chance of manually doing it
     this.manualCurtailmentHistory.push(p*c);
@@ -168,19 +182,24 @@ class Program{
     this.manualCurtailmentHistoryAvg = Math.floor((a/this.manualCurtailmentHistory.length)*100)/100;
 
   }
+
 }
 
 class Package{
   constructor(p,r){
     this.package = p;
     this.pvWatts = 0;//solar array wattage
+    this.pvStatus = false;//is the pv module produce this hour
     this.batWh = 0; //capacity of battery
     this.batType = "LION";//options SLA, LION
     this.batDoD = .8;// battery depth of discharge
     this.batState = 1.0; //percentage of charge
+    this.batChargingStatus = false; //is the battery being charge currently?
+    this.batDischargingStatus = false; //is the battery discharging currently?
     this.inverterType = "hybrid";//options: hybrid, off-grid, on-grid
     this.inverterEfficiency = .9 ;//inverter efficiency
     this.gridChargeRate = 0; //charger watts (how fast can the grid charge the battery per hour)
+    this.gridChargeStatus = false; //is the grid providing power this hour
     this.smartRelay = r; //boolean for automated or manual switching
     this.cost = 0; //estimated hardware costs
     this.setPackage();
