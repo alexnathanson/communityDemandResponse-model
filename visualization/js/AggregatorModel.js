@@ -13,6 +13,10 @@ class Participant{
     this.solarAccess = 1.0; //percentage of PSH unobstructed
     this.reservationWh = this.reservationW * eD;
     this.manualParticipationRate = 0.3; //SOURCE: Smart AC Demand Control Program: Impact Evaluation Final Report 
+    
+    this.totDCEnergy = 0; //energy produced by the PV
+    this.totACEnergy = 0; //dc energy * inverter efficiency
+
     //communication methods
     this.phone = true;
     this.sms = true;
@@ -20,13 +24,7 @@ class Participant{
     this.iot = true;
     this.interfaceIndicator = true;
 
-    /* Visualation */
     this.location = [100,100]; //this can be set indepedently by the visualizer
-    /*this.partC = [0,255,0];
-    this.autoC = [255,150,255];
-    this.batC = [0,255,255];
-    this.alertC = [255,100,0];
-    this.manuC = [100,150,255];*/
 
     /* New stuff */
 
@@ -37,115 +35,77 @@ class Participant{
     this.borough = '';
     //this.psh = [];
 
+    this.overallParticipation = 1;
+    this.overallAutoReplacement = 1;
+    this.overallManualCurtailment = 1;
+
   }
 
-  updateEnergy(eH,isPSH, weather){
-    //draw down battery
-    this.package.batState = this.package.batState - (this.loadProfile[eH]/ this.package.batWh)
+  //returns wattage produce by solar array at this particular psh%
+  //solar access variables needs
+  solarProductionW(psh){
+    return this.package.pvWatts * psh * this.solarAccess; 
+  }
+
+  //returns power produce by solar array as a % of battery capacity
+  solarProductionAsBatPercentage(psh){
+    return this.solarProductionW(psh) / this.package.batWh; 
+  }
+
+  //elapsed hours, psh at this moment, ongoing event status, alerted about future event, prediction for future event
+  updateEnergy(eH,psh, o, eP,oP){
+
+    let tempBatState = this.package.batState;
+
+    //if there isn't an ongoing event
+    if(!o){
+      //draw down battery if no event is suspected
+      tempBatState = tempBatState - (((this.loadProfile[eH]*1000)/ this.package.batWh)*(1-eP))
+
+      //charge battery with solar if PSH
+      tempBatState = tempBatState + this.solarProductionAsBatPercentage(psh)
     
-    //charge battery with solar if PSH
-    if(isPSH){
-      this.package.batState = this.package.batState + this.package.batState.pvWatts
-    }
-  }
-
-  isPSH(){
-
-  }
-
-  /*updateEnergyDraw(){
-    //update power draw
-    this.batPerc = max(this.batPerc - (this.loadW/this.batWh),0.0);
-  }
-
-  updateEnergyChargePV(){
-    let h= int(clock%24);
-
-    let c = false;
-    if(mode == 'grid'){
-      //grid at cheapest time of day
-      if(h > 20 || h < 5){
-        c= true;
+      //charge battery from grid if no solar and event is anticipated
+      if(psh == 0 & eP != 0){
+        //console.log(psh + ' psh and ' + eP +' event, charging from grid')
+        tempBatState =tempBatState + ((eP * this.package.gridChargeRate)/this.package.batWh)
       }
-    } else if (mode == 'solar'){
-      //peak sun hours
-      if(h > 9 && h < 15){
-        c=true;
+
+    //console.log(this.package['batState'])
+
+    } else {//if there is an event ongoing
+
+      //charge battery with solar if PSH
+      tempBatState = tempBatState + + this.solarProductionAsBatPercentage(psh)
+
+      // determine amount to of load up to reservation amt
+      let eventLoad = Math.min(this.reservationW,(this.loadProfile[eH]*1000))
+
+      //determine energy in battery available for replacement
+      let availEnergy = tempBatState * this.package.batWh;
+
+      //determined percentage of eventLoad available
+      let rep = Math.min(1,availEnergy/eventLoad)
+
+      if(oP == "CSRP"){
+        this.csrp.updateAutoReplacement(rep)
+      } else if (oP == "DLRP"){
+        this.dlrp.updateAutoReplacement(rep)
       }
+      //update
+      tempBatState = tempBatState - (eventLoad/ this.package.batWh)
+      
+      
     }
 
-    if(c){
-      this.batPerc = min(this.batPerc + (this.chargeW/this.batWh),1.0);
-    }
-  }*/
+    tempBatState = Math.max(0,tempBatState)
+    this.package.batState = Math.min(1,tempBatState)
 
-  //this needs work
-  /*updateParticipation(){
-    let autoP = min((this.batPerc * this.batWh)/this.reservationWh,1.0);
-    //let manuP = (1 - autoP) * this.manualParticipationRate;
-    this.updateAutoReplacement(autoP);
-    let manuP = this.updateManualCurtailment(autoP)
-
-    this.participationHistory.push(min(autoP+manuP,1.0));
-
-    let a = 0;
-    for(let p of this.participationHistory){
-      a = a + p;
-    }
-    this.participationRateAvg = a/this.participationHistory.length;
-
-    //console.log([this.automatedReplacementHistoryAvg,this.manualCurtailmentHistoryAvg, this.participationRateAvg])
+    //update total participation stats
+    this.overallParticipation = (this.csrp.participationRateAvg + this.dlrp.participationRateAvg) /2
+    this.overallAutoReplacement =(this.csrp.automatedReplacementHistoryAvg + this.dlrp.automatedReplacementHistoryAvg) /2
+    this.overallManualCurtailment = (this.csrp.manualCurtailmentHistoryAvg + this.dlrp.manualCurtailmentHistoryAvg) /2
   }
-
-  updateAutoReplacement(p){
-    //console.log(this.batPerc * this.batWh);
-    this.automatedReplacementHistory.push(p)
-
-    let a = 0;
-    for(let p of this.automatedReplacementHistory){
-      a = a + p;
-    }
-    this.automatedReplacementHistoryAvg = a/this.automatedReplacementHistory.length;
-  }
-
-  updateManualCurtailment(p){
-    let s = 0;
-
-    //every hour (remaining after auto replacement) random chance of participating
-    //once the stop participating they are done for the remainder of the event
-    for (let i =0;i < int(this.eventDuration*(1-p));i++){
-      if(random() < this.manualParticipationRate){
-        s = s + (1/this.eventDuration);
-      } else {
-        break;
-      }
-    }
-
-    this.manualCurtailmentHistory.push(s);
-
-    this.updateManualCurtailmentAvg();
-    return s;
-  }
-
-  updateManualCurtailmentAvg(){
-
-    let a = 0;
-    for(let p of this.manualCurtailmentHistory){
-      a = a + p;
-    }
-    this.manualCurtailmentHistoryAvg = a/this.manualCurtailmentHistory.length;
-  }*/
-
-  /*getTotParticipation(){
-
-  }
-
-  getTotCsrpParticipation(){
-
-  }
-
-  updateDlrpParticipation(){
-  }*/
 
 }
 
@@ -156,9 +116,57 @@ class Program{
     this.participationRateAvg = 1.0;//total participation (auto + manual)
     this.participationHistory = [];//total participation (auto + manual)
     this.automatedReplacementHistory = [];
-    this.automatedReplacementHistoryAvg = 1.0;
+    this.automatedReplacementHistoryAvg = 1.0;//the % of total demand met by auto replacement
     this.manualCurtailmentHistory = [];
-    this.manualCurtailmentHistoryAvg = 1.0;
+    this.manualCurtailmentHistoryAvg = 1.0; //the % of total demand met by manual curtailment
+  }
+
+  //this needs fixing
+  updateParticipation(){
+
+    //this isn't an average of automated replacement and manual curtailment!
+    //this is the sum of the average % auto replacement could address and the average % manual curtailment could address
+    this.participationRateAvg = Math.floor((this.automatedReplacementHistoryAvg + this.manualCurtailmentHistoryAvg)*100)/100
+  }
+
+  updateAutoReplacement(p){
+    //console.log(this.batPerc * this.batWh);
+    p = Math.floor(p*100)/100;
+
+    this.automatedReplacementHistory.push(p)
+    
+    let a = 0;
+    for(let pa = 0; pa < this.automatedReplacementHistory.length;pa++){
+      a = a + this.automatedReplacementHistory[pa];
+    }
+    this.automatedReplacementHistoryAvg = Math.floor((a/this.automatedReplacementHistory.length)*100)/100;
+
+    this.updateManualCurtailment(1-p);//send the remaining participation percentage to manual curtailment
+    this.updateParticipation()
+
+  }
+
+  updateManualCurtailment(p){
+    p = Math.floor(p*100)/100;
+
+    //determine chance of participation
+    //assumes 30% chance every hour
+    let c = 0;
+    if(Math.random() < .3){
+      c =1
+    }
+
+    //p*c is the remaining % of demand response need * 30% chance of manually doing it
+    this.manualCurtailmentHistory.push(p*c);
+
+    //update manual curtailment history average
+    let a = 0;
+    for(let pa = 0; pa < this.manualCurtailmentHistory.length;pa++){
+      a = a + this.manualCurtailmentHistory[pa];
+    }
+    //round average to 2 decimal places
+    this.manualCurtailmentHistoryAvg = Math.floor((a/this.manualCurtailmentHistory.length)*100)/100;
+
   }
 }
 
@@ -174,30 +182,40 @@ class Package{
     this.inverterEfficiency = .9 ;//inverter efficiency
     this.gridChargeRate = 0; //charger watts (how fast can the grid charge the battery per hour)
     this.smartRelay = r; //boolean for automated or manual switching
-
+    this.cost = 0; //estimated hardware costs
     this.setPackage();
   }
 
   setPackage(){
 
-    if(this.package == 1){//PV module, battery, hybrid inverter
-      this.pvWatts = 50;
-      this.batWh = 2000;
+    if(this.package == 1){
+      //PV module, battery, hybrid inverter
+      //product template: https://www.goalzero.com/collections/portable-solar-generator-kits/products/goal-zero-yeti-1500x-power-station-boulder-100-briefcase-kit
+      this.pvWatts = 100;
+      this.batWh = 1500;
       this.inverterType = "hybrid"
       this.gridChargeRate = 120;
-    } else if (this.package == 2){ //PV module, grid-tied inverter
-      this.pvWatts = 50;
+      this.cost = 2000;
+    } else if (this.package == 2){
+      //PV module, grid-tied inverter
+      //products:
+      //solar: $70 https://hqsolarpower.com/100-watt-12volt-polycrystalline-solar-panel/?Rng_ads=8639ed5a7d8e95a8
+      //inverter: $150 https://cuttingedgepower.com/collections/grid-tie-inverters/products/260w-mini-grid-tie-inverter-for-18-50v-solar-panels-plug-and-play
+      this.pvWatts = 100;
       this.inverterType = "on-grid";
       this.gridChargeRate = 0;
+      this.cost = 220;
     } else if (this.package == 3){ //PV module, battery, off-grid inverter
-      this.pvWatts = 50;
+      this.pvWatts = 100;
       this.batWh = 2000;
       this.gridChargeRate = 0;
       this.inverterType = "off-grid"
+      this.cost = 600
     } else if (this.package == 4){//battery, hybrid inverter
       this.batWh = 2000;
       this.inverterType = "hybrid"
       this.gridChargeRate = 120;
+      this.cost = 1500
     }
 
     if(this.batType == "LION"){
@@ -226,7 +244,9 @@ class Model{
     this.tempThresh = 85; //optimize this!
     this.eventPrediction = 0.0; //percentage of upcoming event likelihood
     this.eventNow = false;
+    this.eventNowProgram = false;
     this.alertNow = false;
+    this.predictionAccuracyRate = NaN;
     //this.startHour = 11;
     this.eventDuration = 4; //4 hour event
     this.testSettings = {}
@@ -239,14 +259,23 @@ class Model{
     this.activityLogFile = 'data/DR-activitylog-cleaned.csv'
     this.nrelKeyFile = 'nrelKey.txt';
     this.pvWatts = {};
-    this.weather = [];//weather data needed
+    this.weatherFile = 'data/NWS-NY-KennedyAirport-2022-observedweather.csv';
+    this.weather = {};//weather data needed
     this.loadProfileFile = 'data/single-day-loadprofile.csv'
     this.loadProfile = {}
+    this.eventPrediction = 0; //percentage chance of upcoming event
   }
 
 //this entire function can probably be done much cleaner by properly chaining promises!
   setupModel(settings){
     this.testSettings = settings;
+    
+    //instantiate participants
+    let resW = (this.testSettings['reservation'] / this.testSettings['participants']) * 1000;
+
+    for (let p =0;p<this.testSettings['participants'];p++){
+      this.participants.push(new Participant(resW, this.eventDuration));
+    }
 
     if(this.testSettings['timeperiod'] == 'august'){
       this.startDay = new Date("8/1/2022"); //first day of the test
@@ -297,7 +326,16 @@ class Model{
                   .then((data) => {
                     this.pvWatts = JSON.parse(data);
                     console.log(this.pvWatts)
-                    this.run();
+
+                    //get weather data
+                    this.readCSVFile(this.weatherFile,this.csvToObj)
+                      .then((data) => {
+                        console.log(data)
+                        this.weather = data
+                        this.run();
+                        })
+                    .catch((error) => {
+                    });
                   })
                   .catch((error) => {
                   });
@@ -413,37 +451,6 @@ class Model{
     return getURL
   }
 
-  /*getPVWatts(city){
-    this.getRequest(this.nrelKeyFile)
-      .then((nKey) => {
-        // api documentation: https://developer.nrel.gov/docs/solar/pvwatts/v8/#request-url
-        const nAzimuth = 180; //cardinal direction
-        const nCapkW = .05; //nameplate capacity minimum 0.05
-        const nLat = 41; //latitude
-        //const nLong //longitude
-        const nTilt = nLat - 15; //priotized for summer
-        const nLosses = 15; //derating
-        const nInvEff = 96.0; // inverter efficiency
-        let nBorough = city.replace(' ',''); //remove spaces
-        const nTimeframe = 'monthly'
-
-        let getURL = 'https://developer.nrel.gov/api/pvwatts/v8.json?api_key=' + nKey.trim() + '&azimuth=' + nAzimuth+'&system_capacity=' + nCapkW +'&losses=' + nLosses +'&array_type=1&module_type=0&inv_eff=' + nInvEff + '&tilt=' +  nTilt +'&address=' + nBorough +',ny&timeframe=' + nTimeframe
-        console.log(getURL)
-        this.getRequest(getURL)
-          .then((data) => {
-            this.pvWatts = JSON.parse(data);
-            console.log(this.pvWatts)
-          })
-          .catch((error) => {
-
-          });
-      })
-      .catch((error) => {
-        console.error(`Error while reading response: ${error.message}`); // Log the error message
-      });
-
-    }*/
-
   dateDelta(d1, d2){
     return (d1.getTime() - d2.getTime()) / (1000 * 60 * 60 * 24);
   }
@@ -452,6 +459,7 @@ class Model{
   checkOngoingEvent(){
 
     this.eventNow = false;
+    this.eventNowProgram = false;
 
     //loop through all events
     for(let a = 0; a < this.activityLog.length;a ++){
@@ -480,8 +488,39 @@ class Model{
       //filter by date
       if( this.nowMS - eventStartMS <= (4 * 60 * 60 * 1000) & this.nowMS - eventStartMS  > 0){
         this.eventNow = true;
+        this.eventNowProgram = this.activityLog[a]['Program'];
       }
     }
+  }
+
+  getEventStartHours(){
+    let sH = [];
+
+    //loop through all events
+    for(let a = 0; a < this.activityLog.length;a ++){
+
+      //event start hour
+      let s = 0;
+
+      //get the date of the event in MS
+      let d = new Date(this.activityLog[a]["Event Date"]).getTime() / 1000 / 60 /60//day of event in MS
+        
+      //csrp entries are listed multiple times in the activity log and need to be filtered be network
+      //get event star time
+      if(this.activityLog[a]["Zone/Network"]=="All"){
+
+        //all participants are in the same neighborhood
+        //this will need to change if they are all unique
+        s = this.participants[0].eventStartHour
+
+      } else if(this.activityLog[a]["Zone/Network"].toLowerCase() == this.participants[0].network){
+        //if your specific network is identfied use the start date in the log
+        s = this.activityLog[a]["Start Time"].split(':')[0] //hour of event
+      }
+
+      sH.push(d + s);      
+    }
+    return sH;
   }
 
   //arguments: DLRP CSRP or ALL
@@ -529,14 +568,39 @@ class Model{
   }
 
   predictEvent(){
+    //Event prediction based on previous 48hr recorded temp and 24hr forecast
+    //data base of 2022 weather forecasts needed!
 
+    //get the number of the day in 2022 that the test is currently at
+    let dayofY = Math.floor((this.nowMS - new Date('1/1/2022').getTime()) / 1000/ 60/60 /24);
+
+    //get the percentage of the temperature in the range of 85-95F
+    //under 85 returns 0
+    //over 95 returns 1
+    let tod = Math.min(Math.max((this.weather[dayofY]['Max T'] - 85)/10,0),1);
+    let yes = Math.min(Math.max((this.weather[dayofY-1]['Max T'] - 85)/10,0),1);
+    let tom = Math.min(Math.max((this.weather[dayofY+1]['Max T'] - 85)/10,0),1);
+
+    //return the average 3 day % between 80-95.
+    return (tod+yes+tom)/3;
+    //return 0;
   }
 
+  //returns a % of the psh if its a sun hour
+  //(i.e. if there are 3.5 sun hours it splits the .5 hour before the start and end of the PSH window)
+  //returns 0 if not psh
   isPSH(){
     let month = new Date(this.nowMS).getMonth() 
     let psh = this.pvWatts.outputs['solrad_monthly'][month -1]
-    if (Math.abs((this.elapsedHours % 24) - 12) < psh * .5){
-      return true;
+    //console.log(psh)
+    if (Math.abs((this.elapsedHours % 24) - 12) < Math.floor(psh * .5)  ){
+      return 1;
+    } else if (Math.abs((this.elapsedHours % 24) - 12) < psh * .5){
+      let r = (psh * .5)- Math.floor(psh * .5 )
+      //console.log(r)
+      return r;
+    } else {
+      return 0;
     }
   }
 
@@ -552,11 +616,8 @@ class Model{
       }
     }
 
-    //instantiate participants
-    let resW = (this.testSettings['reservation'] / this.testSettings['participants']) * 1000;
-
     for (let p =0;p<this.testSettings['participants'];p++){
-      this.participants.push(new Participant(resW, this.eventDuration));
+      //this.participants.push(new Participant(resW, this.eventDuration));
       //this.participants[p].reservationW = resW;
       this.participants[p].dlrp.participating = (this.testSettings['DLRP'] == 'true');
       this.participants[p].csrp.participating = (this.testSettings['CSRP'] == 'true');
@@ -614,29 +675,19 @@ class Model{
       //check if alert has been issued
       this.checkAlertActivity();
 
-      //determine likelihood of upcoming event
-      this.predictEvent();
-
-      //determine what to do with available energy and
-      //update energy consumption and production states
-
-      //update PV based on time of day and NREL PV watts data
-      //center sun hours around noon
-
-      //if no event do normal
-      //pass in psh, weather
-      for (let p = 0; p < this.participants.length;p++){
-        this.participants[p].updateEnergy(this.elapsedHours%24, this.isPSH())
+      if(this.alertNow){
+        this.eventPrediction = 1;
+      } else {
+        //determine likelihood of upcoming event
+        this.eventPrediction = this.predictEvent();
       }
 
-      //
+      //if no event do normal
+      //pass in hour of the day, psh, event status, and prediction
+      for (let p = 0; p < this.participants.length;p++){
+        this.participants[p].updateEnergy(this.elapsedHours%24, this.isPSH(), this.eventNow, this.eventPrediction, this.eventNowProgram)
+      }
 
-      //100ms viz = 1 hour irl
-      //this.clock = (Date.now()/this.runSpeed) - this.clockOffset;
-      //new Date(year,month,day,hours)
-      //console.log(1+int(clock/23));
-      //this.day = Math.floor(this.clock/24)+1;
-      //hour = clock% 24;
       this.elapsedHours++;
 
     }

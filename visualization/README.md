@@ -44,8 +44,14 @@ Each hour it
 ## Inputs
 * Con Ed networks (DR event and program characteristics)
 * DR event history
-* Historical Actual Weather (for event prediction) actual weather is required instead of TMY weather to match the event history
+* 2022 Observed Weather (for event prediction) actual weather is required instead of TMY weather to match the event history
+ * Source: National Weather Service NY-Kennedy https://www.weather.gov/wrh/Climate?wfo=okx
 * NREL PV watts (primarily for sun hours)
 * Load profiles 
 * hardware packages to test
 
+
+Gaps and Future Work
+* include building geometry for more complex solar access numbers
+* interactions between participants
+* include various load profiles
