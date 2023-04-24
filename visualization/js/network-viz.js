@@ -15,6 +15,7 @@ for (const [key, value] of urlParams.entries()) {
 document.getElementById('network').href = document.getElementById('network').href + qString
 document.getElementById('settings').href = document.getElementById('settings').href + qString
 document.getElementById('single').href = document.getElementById('single').href + qString
+document.getElementById('system').href = document.getElementById('system').href + qString
 
 document.getElementById('timeframe').innerHTML = testSettings['timeperiod']
 
@@ -23,14 +24,15 @@ let model = new Model()
 model.setupModel(testSettings);
 
 
+let viz = new ModelVisualization(model,250,70);
 /*********visualization stuff*********/
 
 let img, weather;
 let imgX = 1713;
 let imgY = 964;
 let imgRatio = imgY/imgX;
-let infoBarY = 70
-let sideBarX = 250
+//let infoBarY = 70
+//let sideBarX = 250
 let canvasX, canvasY, ibY;
 
 let partC, batC, alertC,timeC, elapsedTimeC, autoC, manuC,normalC,eventC;
@@ -42,7 +44,7 @@ let eventSH;
 let ds = 1; // drop shadow offset
 
 function preload() {
-  img = loadImage('assets/crownheights-googlemaps.png');
+  img = loadImage('assets/crownheights-googlemaps-bw.png');
 
   weather = loadTable('data/nyc-weather-aug2022-cleaned.csv', 'csv', 'header');
 
@@ -51,23 +53,23 @@ function preload() {
   canvasY=c.clientHeight
 
   //set top of info bar
-  ibY = canvasY-infoBarY;
+  ibY = canvasY-viz.infoBarY;
 }
 
 function setup() {
   //canvasX = windowWidth-20;
   //canvasY = canvasX* imgRatio;
 
-  //createCanvas(canvasX,canvasY+infoBarY);
+  //createCanvas(canvasX,canvasY+viz.infoBarY);
   let canvas = createCanvas(canvasX,canvasY);
   canvas.parent('p5-canvas');
 
   background(255)
-  img.resize(canvasX,canvasY-infoBarY)
+  img.resize(canvasX,canvasY-viz.infoBarY)
 
   //place circles
   for (let p =0;p<model.participants.length;p++){
-    model.participants[p].location = [Math.floor(random(canvasX-50-sideBarX))+25+sideBarX,Math.floor(random(canvasY-infoBarY-50))+25];
+    model.participants[p].location = [Math.floor(random(canvasX-50-viz.sideBarX))+25+viz.sideBarX,Math.floor(random(canvasY-viz.infoBarY-50))+25];
   }
 
   //colors for energy viz
@@ -101,15 +103,15 @@ function draw(){
 
 
   //draw participants
-  for(let p=0; p < model.participants.length;p++){
+  for(let p=0; p < Math.min(model.participants.length,15);p++){
     drawP(model.participants[p],eventFlag, eventNow);
   }
 
-  drawInfoBar();
+  viz.drawInfoBar(model.getEventStartHours());
 
-  drawClock(canvasX-(infoBarY*.5),ibY+(infoBarY*.5), model.elapsedHours, model.eventNow);
+  viz.drawClock(canvasX-(viz.infoBarY*.5),ibY+(viz.infoBarY*.5), model.elapsedHours, model.eventNow);
 
-  drawKey();
+  viz.drawKey(model);
 
 }
 
@@ -117,10 +119,10 @@ function drawKey(){
   let kY = 15;
   let kH = 25;
   let kX = 15;
-  let kW = sideBarX-(kX*2);
+  let kW = viz.sideBarX-(kX*2);
 
   fill(220,240,255)
-  rect(0,0,sideBarX,ibY);
+  rect(0,0,viz.sideBarX,ibY);
 
   push()
     textSize(14);
@@ -178,12 +180,12 @@ function drawKey(){
   pop()
 }
 
-function drawInfoBar(){
+/*function drawInfoBar(){
 //progress bar parent box
 
   textSize(16);
 
-  bW = canvasX-infoBarY;
+  bW = canvasX-viz.infoBarY;
 
   let totDays = ((model.endDay.getTime()-model.startDay.getTime())/1000/60/60/24)
   let currentHour = (model.nowMS-model.startDay.getTime())/1000/60/60
@@ -225,7 +227,7 @@ function drawInfoBar(){
   //console.log(model.elapsedHours)
   for (let s of eventSH){
     if ((model.elapsedHours + sH) > s){
-    //circle(int(s.startTotHour*(dW/24)),canvasY+infoBarY-20,15);
+    //circle(int(s.startTotHour*(dW/24)),canvasY+viz.infoBarY-20,15);
     push();
       textAlign(CENTER,CENTER);
       textSize(24);
@@ -240,9 +242,9 @@ function drawInfoBar(){
   }
 
   
-}
+}*/
 
-function drawWeather(dW){
+/*function drawWeather(dW){
 
   push()
 
@@ -258,11 +260,6 @@ function drawWeather(dW){
       stroke(0);
       fill(map(model.weather[d+startDayNumber]['Max T'],tMin,tMax,0,255),0,map(model.weather[d+startDayNumber]['Max T'],tMin,tMax,255,0))
       rect(d*dW,map(model.weather[d+startDayNumber]['Max T'],tMin,tMax,canvasY,canvasY-45), dW,canvasY)
-
-      /*
-        dWH = dW * .5;
-        line((d)*dW +dWH,map(model.weather[d+startDayNumber]['Max T'],50,100,canvasY,canvasY-45),
-        ((d+1)*dW)+dWH,map(model.weather[d+startDayNumber+1]['Max T'],50,100,canvasY,canvasY-45));*/
     }
 
     noStroke()
@@ -275,29 +272,29 @@ function drawWeather(dW){
     
     fill(0)
     text(tMax + "F", 5,canvasY-45);
-    //line(0,canvasY+infoBarY-45,10,canvasY+infoBarY-45)
+    //line(0,canvasY+viz.infoBarY-45,10,canvasY+viz.infoBarY-45)
     text("TEMP", 5,canvasY-25);
     text(tMin + "F", 5,canvasY-5);
   pop();
-}
+}*/
 
-function drawClock(cX,cY,c,eF){
+/*function drawClock(cX,cY,c,eF){
   fillColor()
   stroke(0)
-  rect(canvasX-infoBarY,canvasY - infoBarY,canvasX,canvasY);
+  rect(canvasX-viz.infoBarY,canvasY - viz.infoBarY,canvasX,canvasY);
 
   fill(0,100)
-  rect(canvasX-infoBarY,canvasY - infoBarY,canvasX,canvasY);
+  rect(canvasX-viz.infoBarY,canvasY - viz.infoBarY,canvasX,canvasY);
 
   fill(timeC);
   circle(cX,cY,60);
 
   //change to red if event is upcoming/ongoing
   fillColor()
-  arc(cX,cY, infoBarY-10, infoBarY-10, -HALF_PI, (((c% 24)/24)*TWO_PI)-HALF_PI);
-}
+  arc(cX,cY, viz.infoBarY-10, viz.infoBarY-10, -HALF_PI, (((c% 24)/24)*TWO_PI)-HALF_PI);
+}*/
 
-function fillColor(){
+/*function fillColor(){
     if(model.eventNow){
       fill(eventC)
     } else if(model.alertNow){
@@ -305,7 +302,7 @@ function fillColor(){
     } else {
       fill(normalC);
     }
-}
+}*/
 
 function drawP(p){
   push();
@@ -326,7 +323,7 @@ function drawP(p){
     }
     text(pT,p.location[0]+1,p.location[1]+1)
     
-    fillColor();
+    viz.fillColor();
 
     text(pT,p.location[0],p.location[1])
     

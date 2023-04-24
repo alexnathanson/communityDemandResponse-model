@@ -70,20 +70,32 @@
 
           <p>
             <input type="radio" id="p1" name="package" value="1" checked>
-            
-            <label for="uniform" >Package 1: Hybrid</label><br>
-            <div class="package-details">Includes: PV module, battery, hybrid inverter</div>
-            <div class="package-details"><span class="tooltip">Estimated RoI:<span class="tooltiptext">Assumes full participation with above settings.</span></span></div><br>
+            <label for="p1" >Package 1: Hybrid</label><br>
+            <div class="package-details">Includes: 100W PV module, 1500Wh battery, hybrid inverter</div><br>
 
             <input type="radio" id="p2" name="package" value="2">
-            <label for="random">Package 2: Grid Tied Solar</label><br>
-            <div class="package-details">Includes: PV module, grid-tied inverter</div><br>
+            <label for="p2">Package 2: Small Hybrib</label><br>
+            <div class="package-details">Includes: 100W PV module, 500Wh battery, hybrid inverter</div><br> 
+
             <input type="radio" id="p3" name="package" value="3">
-            <label for="random">Package 3: Off-grid Solar</label><br>
+            <label for="p3">Package 3: Big PV with Small Hybrid</label><br>
+            <div class="package-details">Includes: 400W PV module, 500Wh battery, hybrid inverter</div><br> 
+            <!-- Includes: PV module, grid-tied inverter --></div><br>
+            <!--<input type="radio" id="p3" name="package" value="3">
+            <label for="p3">Package 3: Off-grid Solar</label><br>
             <div class="package-details">Includes: PV module, battery, off-grid inverter</div><br>
             <input type="radio" id="p4" name="package" value="4">
-            <label for="random">Package 4: Battery</label><br>
+            <label for="p4">Package 4: Battery</label><br>
             <div class="package-details">Includes: battery, hybrid inverter</div><br>
+            <input type="radio" id="p5" name="package" value="5">
+            <label for="p4">Custom Package</label><br>
+
+            <div id='customPackageContainer'>
+              <label for="pvPower" class="slider-label">PV Array Watts</label>
+              <div class="slidecontainer">
+              <input type="range" min="50" max="500" value="50" class="slider" id="pvPower" name="pvPower"> 
+            </div>
+            </div> -->
 
           </p>
 
@@ -105,6 +117,8 @@
           <label for="sms">SMS</label> -->
 
           <h3>Model Settings</h3>
+          <input type="checkbox" id="prediction" name="prediction" value="true" checked>
+          <label for="prediction">Prediction Mode</label><br>
           <!-- <div class="slidecontainer">
             <input type="range" min="1" max="30" value="30" class="slider" id="days" onchange="updateSlider(this.id,this.value,'dayAmt')">
           </div>   -->

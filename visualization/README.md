@@ -55,3 +55,6 @@ Gaps and Future Work
 * include building geometry for more complex solar access numbers
 * interactions between participants
 * include various load profiles
+
+
+Add in calculations of additional values (i.e. diverted electrical costs)
