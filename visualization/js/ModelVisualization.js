@@ -4,6 +4,7 @@ class ModelVisualization{
     this.infoBarY = iY
     this.model = m
     this.participantNumber = 0;
+    this.pScale = 1;
     this.showLabel = sL
   }
 
@@ -242,7 +243,7 @@ class ModelVisualization{
       textAlign(CENTER,CENTER);
       textStyle(BOLD);
       fill(0);
-      textSize(16);
+      textSize( this.pScale * 16);
 
       let pT = 'P';
       if(model.eventNow){
@@ -257,27 +258,27 @@ class ModelVisualization{
       text(pT,p.location[0],p.location[1])
       
       //draw info bars
-      strokeWeight(5);
+      strokeWeight( this.pScale * 5);
 
       //bat
       noFill();
       stroke(batC)
-      arc(p.location[0],p.location[1], 30,30, -HALF_PI, percToRad(p.package.batState)-HALF_PI);
+      arc(p.location[0],p.location[1], this.pScale * 30, this.pScale * 30, -HALF_PI, percToRad(p.package.batState)-HALF_PI);
 
       //DLRP participation
       noFill();
       stroke(autoC)
-      arc(p.location[0],p.location[1], 45,45, -HALF_PI, percToRad(p.overallAutoReplacement)-HALF_PI);
+      arc(p.location[0],p.location[1],  this.pScale * 45, this.pScale * 45, -HALF_PI, percToRad(p.overallAutoReplacement)-HALF_PI);
 
       //CSRP participation
       noFill();
       stroke(manuC)
-      arc(p.location[0],p.location[1], 60,60, -HALF_PI, percToRad(p.overallManualCurtailment)-HALF_PI);
+      arc(p.location[0],p.location[1],  this.pScale * 60, this.pScale * 60, -HALF_PI, percToRad(p.overallManualCurtailment)-HALF_PI);
 
       //tot participation
       noFill();
       stroke(partC)
-      arc(p.location[0],p.location[1], 75,75, -HALF_PI, percToRad(p.overallParticipation)-HALF_PI);
+      arc(p.location[0],p.location[1],  this.pScale * 75, this.pScale * 75, -HALF_PI, percToRad(p.overallParticipation)-HALF_PI);
     pop();
   }
 

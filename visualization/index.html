@@ -60,27 +60,41 @@
             <label for="random">Randomize participant tiers</label><br>
           </p> -->
 
-          <h4>Available Hardware Packages</h4>
-          <!-- <p>
-            <input type="radio" id="uniform" name="uniform" value="uniform" checked>
-            <label for="uniform">All participants have uniform characteristics, except for location</label><br>
-            <input type="radio" id="random" name="uniform" value="randomize">
-            <label for="random">Randomize participant characteristics within assumed ranges</label><br>
-          </p> -->
+          <h3>Hardware Selection</h3>
+
+          <h4>LiFePO4 Power Station</h4>
 
           <p>
             <input type="radio" id="p1" name="package" value="1" checked>
-            <label for="p1" >Package 1: Hybrid</label><br>
-            <div class="package-details">Includes: 100W PV module, 1500Wh battery, hybrid inverter</div><br>
+            <label for="p1" >100Wh</label><br>
+<!--             <div class="package-details">100W PV module, 1500Wh battery, hybrid inverter</div><br> -->
 
             <input type="radio" id="p2" name="package" value="2">
-            <label for="p2">Package 2: Small Hybrib</label><br>
-            <div class="package-details">Includes: 100W PV module, 500Wh battery, hybrid inverter</div><br> 
+            <label for="p2">270Wh</label><br>
+<!--             <div class="package-details">100W PV module, 500Wh battery, hybrid inverter</div><br>  -->
 
             <input type="radio" id="p3" name="package" value="3">
-            <label for="p3">Package 3: Big PV with Small Hybrid</label><br>
-            <div class="package-details">Includes: 400W PV module, 500Wh battery, hybrid inverter</div><br> 
-            <!-- Includes: PV module, grid-tied inverter --></div><br>
+            <label for="p3">540Wh</label><br>
+            <!-- <div class="package-details">Includes: 400W PV module, 1200Wh battery, hybrid inverter</div><br>  -->
+
+            <input type="radio" id="p4" name="package" value="4">
+            <label for="p4">650Wh</label><br>
+<!--             <div class="package-details">Includes: 400W PV module, 1200Wh battery, hybrid inverter</div><br> 
+ -->
+            <input type="radio" id="p5" name="package" value="5">
+            <label for="p5">1000Wh</label><br>
+
+<input type="radio" id="p6" name="package" value="6">
+            <label for="p6">1260Wh</label><br>
+
+            <input type="radio" id="p7" name="package" value="7">
+            <label for="p7">1500Wh</label><br>
+
+            <input type="radio" id="p8" name="package" value="8">
+            <label for="p7">2000Wh</label><br>
+
+
+             <!-- Includes: PV module, grid-tied inverter --></div><br>
             <!--<input type="radio" id="p3" name="package" value="3">
             <label for="p3">Package 3: Off-grid Solar</label><br>
             <div class="package-details">Includes: PV module, battery, off-grid inverter</div><br>
@@ -98,6 +112,14 @@
             </div> -->
 
           </p>
+
+          <h4>PV Watts</h4>
+          <div class="slideparent">
+            <label for="participants" class="slider-label">Watts</label>
+            <div class="slidecontainer">
+              <input type="range" min="2" max="1000" value="100" class="slider" id="pvWatts" name="participants" oninput=""> 
+            </div>
+          </div>
 
           <input type="checkbox" id="smart-relay" name="smart-relay" value="true" checked>
           <label for="smart-relay">Include smart relays/outlets</label><br>

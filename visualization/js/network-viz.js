@@ -67,10 +67,16 @@ function setup() {
   background(255)
   img.resize(canvasX,canvasY-viz.infoBarY)
 
+  //comment out for clean icon
   //place circles
   for (let p =0;p<model.participants.length;p++){
     model.participants[p].location = [Math.floor(random(canvasX-50-viz.sideBarX))+25+viz.sideBarX,Math.floor(random(canvasY-viz.infoBarY-50))+25];
   }
+  //end comment out for clean icon
+
+  //comment in for clean icon
+  //model.participants[0].location = [.5*(canvasX-50-viz.sideBarX)+25+viz.sideBarX,.5*(canvasY-viz.infoBarY-50)+25];
+
 
   //colors for energy viz
   partC = color(0,255,0);
@@ -95,17 +101,24 @@ function draw(){
 
   eventNow= model.eventNow;
 
+  //comment in for clean icon
+  //background(255)
+  //viz.drawP(model.participants[0],eventFlag, eventNow);
+  //end comment in for clean icon
+
+  //Comment out for clean icon
   image(img, 0,0);
 
   //day light overlay
   fill(0,0,0,map(min(abs(12-model.elapsedHours%24),6),0,6,50,120));
+  //fill(0,100)
   rect(0,0,canvasX,canvasY);
-
 
   //draw participants
   for(let p=0; p < Math.min(model.participants.length,15);p++){
-    drawP(model.participants[p],eventFlag, eventNow);
+    viz.drawP(model.participants[p],eventFlag, eventNow);
   }
+  //end comment out for clean icon
 
   viz.drawInfoBar(model.getEventStartHours());
 
@@ -304,7 +317,7 @@ function drawKey(){
     }
 }*/
 
-function drawP(p){
+/*function drawP(p){
   push();
 
     //draw P with drop shadow
@@ -317,8 +330,6 @@ function drawP(p){
 
     let pT = 'P';
     if(model.eventNow){
-      /*fill(255);
-      circle(this.location[0],this.location[1], 30,30)*/
       pT = "!";
     }
     text(pT,p.location[0]+1,p.location[1]+1)
@@ -350,7 +361,7 @@ function drawP(p){
     stroke(partC)
     arc(p.location[0],p.location[1], 75,75, -HALF_PI, percToRad(p.overallParticipation)-HALF_PI);
   pop();
-}
+}*/
 
 function percToRad(p){
     return p * TWO_PI;

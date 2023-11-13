@@ -1,3 +1,12 @@
+/*
+Classes:
+Participant - for storing individual participant characteristics
+Program - to track participation for each program (instantiated within Participant)
+Package - hardware package used in the model
+Model - details about the context for the model to run
+*/
+
+//class for storing individual participant characteristics
 class Participant{
   constructor(r,eD,sm){
     this.reservationW=r;
@@ -257,6 +266,7 @@ class Program{
 
 }
 
+//hardware package used in the model
 class Package{
   constructor(p,r,w){
     this.package = p;
@@ -284,7 +294,7 @@ class Package{
 
   setPackage(){
 
-    if(this.package == 1){
+    /*if(this.package == 1){
       //PV module, battery, hybrid inverter
       //product template: https://www.goalzero.com/collections/portable-solar-generator-kits/products/goal-zero-yeti-1500x-power-station-boulder-100-briefcase-kit
       this.pvWatts = 100;
@@ -297,9 +307,6 @@ class Package{
       //products:
       //solar: $70 https://hqsolarpower.com/100-watt-12volt-polycrystalline-solar-panel/?Rng_ads=8639ed5a7d8e95a8
       //inverter: $150 https://cuttingedgepower.com/collections/grid-tie-inverters/products/260w-mini-grid-tie-inverter-for-18-50v-solar-panels-plug-and-play
-      /*this.pvWatts = 100;
-      this.inverterType = "on-grid";
-      this.gridChargeRate = 0;*/
       this.pvWatts = 100;
       this.batWh = 500;
       this.inverterType = "hybrid"
@@ -307,25 +314,64 @@ class Package{
       this.cost = 750;
     } else if (this.package == 3){ //PV module, battery, off-grid inverter
       this.pvWatts = 400;
-      this.batWh = 500;
+      this.batWh = 1200;
       this.inverterType = "hybrid"
       this.gridChargeRate = 120;
-      this.cost = 1000;
-      /*this.pvWatts = 100;
-      this.batWh = 2000;
-      this.gridChargeRate = 0;
-      this.inverterType = "off-grid"*/
+      this.cost = 500;
     } else if (this.package == 4){//battery, hybrid inverter
       this.batWh = 2000;
       this.inverterType = "hybrid"
       this.gridChargeRate = 120;
-    }
+    }*/
 
-    if(this.batType == "LION"){
+    /*if(this.batType == "LION"){
+      this.batDoD = .8
+    } if(this.batType == "LIFEPO"){
       this.batDoD = .8
     } else if (this.batType == "SLA"){
       this.batDoD = .5
-    }
+    }*/
+
+    if(this.package == 1){
+      this.pvWatts = 40;
+      this.batWh = 100;
+      //cost of battery + PV at $1/W
+      this.cost = 150 + (this.pvWatts * 1);
+    } else if(this.package == 2){
+      this.pvWatts = 430;
+      this.batWh = 270;
+      this.cost = 209+ (this.pvWatts * 1);
+    }  else if(this.package == 3){
+      this.pvWatts = 200;
+      this.batWh = 540;
+      this.cost = 399 + (this.pvWatts * 1);
+    }  else if(this.package == 4){
+      this.pvWatts = 500;
+      this.batWh = 650;
+      this.cost = 499 + (this.pvWatts * 1);
+    }  else if(this.package == 5){
+      this.pvWatts = 500;
+      this.batWh = 1000;
+      this.cost = 999 + (this.pvWatts * 1);
+    }  else if(this.package == 6){
+      this.pvWatts = 500;
+      this.batWh = 1260;
+      this.cost = 1200 + (this.pvWatts * 1);
+    }  else if(this.package == 7){
+      this.pvWatts = 600;
+      this.batWh = 1500;
+      this.cost = 899 + (this.pvWatts * 1);
+    } else if(this.package == 8){
+      this.pvWatts = 700;
+      this.batWh = 2000;
+      this.cost = 1299 + (this.pvWatts * 1);
+    } 
+    
+    this.inverterType = "hybrid"
+    this.gridChargeRate = 120;
+    this.batDoD = .8
+
+
   }
 
   //dollar per wH
@@ -370,6 +416,7 @@ class Package{
 
 }
 
+//details about the context for the model to run
 class Model{
   constructor(){
     //run settings
