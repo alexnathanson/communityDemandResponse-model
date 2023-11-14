@@ -1,0 +1,38 @@
+Make,Model,Battery Wh,Max PV Watt,W to Wh ratio,Min PV Voltage,Max PV Voltage,Max PV Amps,Inverter Watts,Grid Charge Watts,Inverter Efficiency,Battery Type,Retail Price (11/12/2023),Price per Wh,Pass Through Charging,Smart Control,Warranty Years,Cycles,DoD,Lifespan,Link
+Jackery,Explorer 1000 Plus Portable Power Station,1264.64,800,0.6325910931,,,,2000,,,LiFePO4,899.00,0.71,FALSE,FALSE,3,4000,70,,https://www.jackery.com/products/jackery-explorer-1000-plus-portable-power-station?variant=40233095135319
+Jackery,Explorer 2000 Plus Portable Power Station,2042.8,1400,0.6853338555,,,,3000,,,LiFePO4,"1,659.00",0.81,FALSE,FALSE,,4000,70,,https://www.jackery.com/products/explorer-2000-plus-portable-power-station
+Pecron,Portable Power Station ,614,400,0.651465798,12,18,7,1200,,,LiFePO4,299.00,0.49,FALSE,FALSE,2,3500,80,,https://www.pecron.com/products/pecron-e600lfp-1200w-portable-power-station-lifepo4
+Pecron,E1500LFP Expandable Power Station ,1536,800,0.5208333333,12,18,7,2200,,,LiFePO4,899.00,0.59,FALSE,FALSE,2,3500,80,,https://www.pecron.com/products/pecron-e1500lfp-expandable-power-station-2200w-1536wh
+Pecron,E2000LFP Expandable Portable Power Station,1920,1200,0.625,12,18,7,2000,,,LiFePO4,899.00,0.47,FALSE,FALSE,2,3500,80,,https://www.pecron.com/products/pecron-e2000lfp-portable-power-station
+BougeRv,FORT 1000 1120Wh LiFePO4 Portable Power Station,1120,200,0.1785714286,12,30,8,1200,,,LiFePO4,"1,159.98",1.04,FALSE,FALSE,7,3500,80,,https://www.bougerv.com/products/fort-1000-portable-power-station
+BougeRv,FORT 1500 Portable Power Station,1456,400,0.2747252747,12,45,12,2200,,,LiFePO4,"2,099.99",1.44,FALSE,FALSE,7,3500,80,,https://www.bougerv.com/products/fort-1500-portable-power-station
+Lion Energy,Safari Portable Power Generator,1612,600,0.3722084367,24,60,25,3000,,,LiFePO4,"1,699.00",1.05,FALSE,FALSE,5,3500,80,,https://lionenergy.com/products/lion-safari
+Lion Energy,Energy Summit Bluetooth Portable Generator Kit,665,150,0.2255639098,13,22,,530,,,LiFePO4,499.00,0.75,FALSE,FALSE,5,3500,80,,https://lionenergy.com/products/summit-kit
+Lion Energy,Trek Portable Solar Generator,99.9,40,0.4004004004,12,,,150,,,LiFePO4,149.00,1.49,FALSE,FALSE,5,2000,80,,https://lionenergy.com/products/lion-trek
+Bluetti,EB3A Portable Power Station ,268,200,0.7462686567,,,8.5,600,,,LiFePO4,209.00,0.78,FALSE,FALSE,2,2500,80,,https://www.bluettipower.com/products/bluetti-eb3a-portable-power-station
+Bluetti,EB55 Portable Power Station ,537,200,0.3724394786,12,28,8,700,,,LiFePO4,399.00,0.74,FALSE,FALSE,2,2500,80,,https://www.bluettipower.com/products/bluetti-eb55-537wh-700w-portable-power-station
+Bluetti,EB70S Portable Power Station,716,200,0.2793296089,,,,800,,,LiFePO4,469.00,0.66,FALSE,FALSE,,2500,80,,https://www.bluettipower.com/products/eb70s-716wh-800w-portable-power-station-best-solar-generator-for-camping
+Bluetti,AC60/P,403,200,0.4962779156,,,,600,,,LiFePO4,599.00,1.49,FALSE,FALSE,,3000,80,,https://www.bluettipower.com/products/ac60
+Bluetti,AC180/P Solar Portable Power Station,1152,500,0.4340277778,,,,1800,,,LiFePO4,669.00,0.58,FALSE,FALSE,,3500,80,,https://www.bluettipower.com/products/ac180
+Bluetti,AC200P Portable Power Station,2000,700,0.35,35,150,12,2000,,,LiFePO4,"1,199.00",0.60,FALSE,FALSE,4,3500,80,,https://www.bluettipower.com/products/bluetti-ac200p-2000wh-2000w-portable-power-station
+Bluetti,AC200MAX Expandable Power Station,2048,900,0.439453125,,,,2200,,,LiFePO4,"1,349.00",0.66,FALSE,FALSE,,3500,80,,https://www.bluettipower.com/products/ac200max-power-station
+EcoFlow,DELTA 2 Portable Power Station,1024,500,0.48828125,11,60,15,1800,1200,,LiFePO4,699.00,0.68,FALSE,FALSE,5,3000,80,,https://us.ecoflow.com/products/delta-2-portable-power-station?variant=40569176326217
+Geneverse,HomePower ONE PRO Power Stations,1210,800,0.6611570248,17.5,54,10.5,1200,,,LiFePO4,"1,299.00",1.07,FALSE,FALSE,5,3000,80,,https://geneverse.com/collections/power-stations/products/hp1-pro-lifepo4-power-stations?variant=43976796373227
+Nue,PowerPac 1212,1280,450,0.3515625,30,45,20,1200,,,LiFePO4 ,"1,200.00",0.94,FALSE,FALSE,,6000,80,,https://newuseenergy.com/products/powerpac-1212
+Anker ,SOLIX C1000 Portable Power Station,1056,600,0.5681818182,,,,1800,,,LiFePO4,"1,548.00",1.47,FALSE,FALSE,,3000,80,,https://www.anker.com/products/b17611a3?variant=42755706224790&gad_source=1#!
+Anker ,SOLIX F1200 PowerHouse 757,1229,300,0.244100895,,,,1500,,,LiFePO4,"1,099.00",0.89,FALSE,FALSE,,3000,80,,https://www.anker.com/products/a1770111?ref=naviMenu_pps
+Anker ,SOLIX F2000 PowerHouse 767,2048,1000,0.48828125,,,,2400,,,LiFePO4,"1,999.00",0.98,FALSE,FALSE,,3000,80,,https://www.anker.com/products/a1780?ref=naviMenu_pps
+Oupes,600 Portable Power Station,595.2,100,0.1680107527,12,30,,600,,,LiFePO4,299.00,0.50,FALSE,FALSE,,3500,80,,https://oupes.com/products/oupes-600-portable-power-station
+Oupes,1200 Portable Power Station,992,240,0.2419354839,,,,1200,,,LiFePO4,499.00,0.50,FALSE,FALSE,,3500,80,,https://oupes.com/products/oupes-1200-portable-power-station?currency=USD&stkn=2b7756a4a51a&gad_source=1
+Oupes,1800 Portable Power Station,1488,480,0.3225806452,,,,1800,,,LiFePO4,719.00,0.48,FALSE,FALSE,,3500,80,,https://oupes.com/products/oupes1800w-portable-power-station?pr_prod_strat=use_description&pr_rec_id=98c385130&pr_rec_pid=7091122503857&pr_ref_pid=6940306014385&pr_seq=uniform
+ctechi,GT200 Portable Power Station,240,100,0.4166666667,,,,240,,,LiFePO4,179.00,0.75,FALSE,FALSE,,3500,80,10,https://ctechipower.com/products/ctechi-gt200-240wh-200w-portable-power-station
+Renogy,Portable Power Station 1000 ,998.4,400,0.4006410256,,,,1500,,,LiFePO4,699.99,0.70,FALSE,FALSE,,3000,80,,https://www.renogy.com/renogy-portable-power-station-1000/
+Dabbsson,DBS1300 Portable Power Station ,1330,400,0.3007518797,,,,1200,,,LiFePO4,699.00,0.53,FALSE,FALSE,,4500,80,15,https://www.dabbsson.com/products/dbs1300-portable-power-station-1330wh
+VTOMAN,Jump 600,640,65,0.1015625,12,30,,600,,,LiFePO4,599.00,0.94,FALSE,FALSE,,3100,80,,https://vtoman.com/collections/power-station/products/vtoman-jump-600-portable-power-station-600w-640wh?variant=42291082821801
+VTOMAN,Jump 600X Power Station,299,110,0.3678929766,12,30,,600,,,LiFePO4,399.00,1.33,FALSE,FALSE,,3000,80,,https://vtoman.com/products/vtoman-jump-600x-power-station?variant=43171255189673
+VTOMAN,Jump 1000,1408,200,0.1420454545,,,,1000,,,LiFePO4,"1,299.00",0.92,FALSE,FALSE,,3100,80,,https://vtoman.com/collections/power-station/products/jump1000-power-station?variant=42223453012137
+VTOMAN,Jump 1500X,828,200,0.2415458937,,,,1500,,,LiFePO4,"1,099.00",1.33,FALSE,FALSE,,3100,80,,https://vtoman.com/collections/power-station/products/jump1500-power-station
+VTOMAN,Jump 1800,1548,200,0.1291989664,12,30,,1800,,,LiFePO4,"1,499.00",0.97,FALSE,FALSE,,3100,80,,https://vtoman.com/products/vtoman-jump-1800-portable-power-station-1800w-1548wh-capacity-expandable?variant=43370745725097
+VTOMAN,FlashSpeed 1500 Portable Power Station,1548,400,0.2583979328,30,60,,1500,,,LiFePO4,"1,699.00",1.10,FALSE,FALSE,,3000,80,,https://vtoman.com/collections/power-station/products/vtoman-flashspeed-1500-power-station
+Growatt,INFINITY 1300 ,1382,800,0.5788712012,12,100,,1800,,,LiFePO4,"1,099.00",0.80,FALSE,FALSE,,3000,80,,https://growattportable.com/products/growatt-infinity-1300-lifepo4-portable-power-station
+Growatt,VITA 550 Portable Power Station,538,240,0.4460966543,,,,1050,,,LiFePO4,499.00,0.93,FALSE,FALSE,,3000,80,,https://growattportable.com/products/growatt-vita-550-portable-power-station-easter-sale?gad_source=4
